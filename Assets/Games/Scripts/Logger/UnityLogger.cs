@@ -23,18 +23,14 @@ namespace Game.Logger
             Debug.Log($"<color={logColor}>{filters} {message}</color>");
         }
 
-        public void Warning(object message, FilterLog filterLog)
+        public void Warning(object message)
         {
-            (string filters, string logColor) = GetColorAndFilter(filterLog);
-
-            Debug.LogWarning($"<color={logColor}>{filters} {message}</color>");
+            Debug.LogWarning(message);
         }
 
-        public void Error(object message, FilterLog filterLog)
+        public void Error(object message)
         {
-            (string filters, string logColor) = GetColorAndFilter(filterLog);
-
-            Debug.LogError($"<color={logColor}>{filters} {message}</color>");
+            Debug.LogError(message);
         }
 
         private static bool IsDistinctValue(Enum value)

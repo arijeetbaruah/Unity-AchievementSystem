@@ -5,8 +5,8 @@ namespace Game.Logger
     public interface ILogger
     {
         public void Print(object message, FilterLog filterLog);
-        public void Warning(object message, FilterLog filterLog);
-        public void Error(object message, FilterLog filterLog);
+        public void Warning(object message);
+        public void Error(object message);
     }
 
     public static class Log
@@ -19,8 +19,8 @@ namespace Game.Logger
         }
 
         public static void Print(object message, FilterLog filterLog = FilterLog.Default) => logger.Print(message, filterLog);
-        public static void Warning(object message, FilterLog filterLog) => logger.Warning(message, filterLog);
-        public static void Error(object message, FilterLog filterLog) => logger.Error(message, filterLog);
+        public static void Warning(object message) => logger.Warning(message);
+        public static void Error(object message) => logger.Error(message);
     }
 
     [Flags]

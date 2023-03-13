@@ -8,6 +8,12 @@ namespace Game.Events
 {
     public class EventManager : IService
     {
+        public static void Trigger<T>(T eventType) where T : GameEvent
+        {
+            ServiceRegistry.Get<EventManager>().TriggerEvent<T>(eventType);
+        }
+
+
         /// <summary>
         /// Registry to save event data
         /// </summary>

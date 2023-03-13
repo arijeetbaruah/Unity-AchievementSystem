@@ -26,15 +26,19 @@ public class ServiceBinder : MonoBehaviour
 
     private IEnumerator Start()
     {
+        AuthService authService = ServiceRegistry.Get<AuthService>();
 
         var loadingScreen = assetRefernce.InstantiateAsync();
-        
+
         yield return loadingScreen;
+        yield return authService.Initialize();
 
         GameObject obj = loadingScreen.Result;
         DontDestroyOnLoad (obj);
 
         yield return Addressables.InitializeAsync();
+
+        yield return authService.AsyncLogin();
 
         yield return new WaitForSeconds(3);
 
@@ -49,6 +53,7 @@ public class ServiceBinder : MonoBehaviour
 
     private void Bind()
     {
+        ServiceRegistry.Bind(new AuthService());
         ServiceRegistry.Bind(new EventManager());
         ServiceRegistry.Bind(new LoadingService());
         ServiceRegistry.Bind(new AchievementSystem());
