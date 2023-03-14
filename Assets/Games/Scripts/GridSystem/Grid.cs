@@ -13,7 +13,7 @@ public class Grid<T>
 
     private GridCell<T>[,] cells;
 
-    public Grid(int width, int height, float cellSize, Vector3 offset, Func<int, int, T> initiator)
+    public Grid(int width, int height, float cellSize, Vector3 offset, Func<Vector3, T> initiator)
     {
         this.width = width;
         this.height = height;
@@ -30,9 +30,12 @@ public class Grid<T>
                     x = x,
                     y = y,
                     cellSize = cellSize,
-                    offset = offset,
-                    value = initiator(x, y)
+                    offset = offset
                 };
+
+                var pos = cells[x, y].GetPosition();
+                var value = initiator(pos);
+                cells[x, y].value = value;
             }
         }
     }

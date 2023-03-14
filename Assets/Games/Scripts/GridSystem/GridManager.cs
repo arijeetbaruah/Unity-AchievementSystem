@@ -19,10 +19,11 @@ public class GridManager : MonoBehaviour
 
     private void Awake()
     {
-        grid = new Grid<GameObject>(width, height, cellSize, offset, (x, y) =>
+        grid = new Grid<GameObject>(width, height, cellSize, offset, (pos) =>
         {
             GameObject cell = new GameObject();
             cell.transform.SetParent(transform);
+            cell.transform.localPosition = pos;
 
             return cell;
         });
@@ -32,7 +33,7 @@ public class GridManager : MonoBehaviour
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
-        Grid<int> grid = new Grid<int>(width, height, cellSize, offset, (x, y) =>
+        Grid<int> grid = new Grid<int>(width, height, cellSize, offset, _ =>
         {
             return 0;
         });
