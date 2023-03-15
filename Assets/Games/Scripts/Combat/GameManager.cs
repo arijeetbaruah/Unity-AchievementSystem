@@ -8,6 +8,9 @@ public class GameManager : MonoBehaviour
 
     private CombatStateMachine combatStateMachine = new CombatStateMachine();
 
+    [SerializeField]
+    private GridManager gridManager;
+
     private void Awake()
     {
         instance = this;
