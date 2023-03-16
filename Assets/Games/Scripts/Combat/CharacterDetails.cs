@@ -25,6 +25,8 @@ public class CharacterDetails : MonoBehaviour
     public int currentHP;
     public int currentMana;
 
+    public bool isAIControlled;
+
     public UnityEvent<string, int, int> OnDamageEvent;
     public UnityEvent<string, int, int> OnDeathEvent;
 

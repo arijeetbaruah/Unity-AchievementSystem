@@ -9,4 +9,14 @@ public class CombatStateMachine : StateMachine
     {
         SetState(new InitState(this));
     }
+
+    public IState GetCharacterState(CharacterDetails characterDetail)
+    {
+        if (characterDetail == null)
+        {
+            return null;
+        }
+
+        return characterDetail.isAIControlled ? new AIState(characterDetail, this) : new PlayerState(characterDetail, this);
+    }
 }

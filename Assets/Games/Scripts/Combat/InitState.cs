@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 using Game.StateMachines;
 
 public class InitState : IState
@@ -15,7 +11,11 @@ public class InitState : IState
 
     public void OnStart()
     {
+        GameManager.instance.OrderCharacter();
+        
+        var character = GameManager.instance.GetCurrentCharacter();
 
+        combatStateMachine.SetState(combatStateMachine.GetCharacterState(character));
     }
 
     public void OnEnd()
