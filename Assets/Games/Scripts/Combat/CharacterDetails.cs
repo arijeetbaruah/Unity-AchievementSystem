@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 using DG.Tweening;
+using Cinemachine;
 
 public class CharacterDetails : MonoBehaviour
 {
@@ -21,14 +22,23 @@ public class CharacterDetails : MonoBehaviour
     private TextMeshProUGUI dmgTxtPrefab;
     [SerializeField]
     private Transform dmgTxtParent;
+    [SerializeField]
+    private GameplayCanvas gameplayCanvas;
+
+    [SerializeField]
+    private CinemachineVirtualCamera vcam;
 
     public int currentHP;
     public int currentMana;
+
+    public bool isPlayer;
 
     public UnityEvent<string, int, int> OnDamageEvent;
     public UnityEvent<string, int, int> OnDeathEvent;
 
     public CharacterStats Stats => characterStats;
+    public GameplayCanvas GameplayCanvas => gameplayCanvas;
+    public CinemachineVirtualCamera VirtualCamera => vcam;
 
     private void Start()
     {

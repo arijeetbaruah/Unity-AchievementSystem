@@ -7,6 +7,7 @@ using Game.StateMachines;
 public class InitState : IState
 {
     public CombatStateMachine combatStateMachine;
+    public float waitTimer = 6;
 
     public InitState(CombatStateMachine combatStateMachine)
     {
@@ -15,7 +16,7 @@ public class InitState : IState
 
     public void OnStart()
     {
-
+        
     }
 
     public void OnEnd()
@@ -25,6 +26,16 @@ public class InitState : IState
 
     public void OnUpdate(float deltaTime)
     {
-        
+        waitTimer -= deltaTime;
+
+        if (waitTimer <= 0)
+        {
+            CharacterDetails nextCharacter = combatStateMachine.GetNextCombatant();
+
+            if (nextCharacter.isPlayer)
+            {
+                combatStateMachine.SetState(new PlayerTurn(combatStateMachine, nextCharacter));
+            }
+        }
     }
 }

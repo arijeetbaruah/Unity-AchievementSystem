@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    private CombatStateMachine combatStateMachine = new CombatStateMachine();
+    private CombatStateMachine combatStateMachine;
 
     [SerializeField]
     private GridManager gridManager;
@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        combatStateMachine = new CombatStateMachine(gridManager);
     }
 
     private void OnDestroy()
