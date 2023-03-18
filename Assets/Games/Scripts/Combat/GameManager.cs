@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -11,7 +12,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GridManager gridManager;
 
-    private void Awake()
+    private int currentTurn = 0;
+
+    private void Start()
     {
         instance = this;
         combatStateMachine = new CombatStateMachine(gridManager);
@@ -24,6 +27,6 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        combatStateMachine.OnUpdate(Time.deltaTime);
+        combatStateMachine?.OnUpdate(Time.deltaTime);
     }
 }

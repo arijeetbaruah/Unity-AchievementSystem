@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 using Game.StateMachines;
 
 public class InitState : IState
@@ -16,7 +12,7 @@ public class InitState : IState
 
     public void OnStart()
     {
-        
+
     }
 
     public void OnEnd()
