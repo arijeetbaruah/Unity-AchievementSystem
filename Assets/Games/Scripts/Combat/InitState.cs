@@ -32,6 +32,10 @@ public class InitState : IState
             {
                 combatStateMachine.SetState(new PlayerTurn(combatStateMachine, nextCharacter));
             }
+            else
+            {
+                combatStateMachine.SetState(new AITurn(combatStateMachine, nextCharacter));
+            }
         }
     }
 }

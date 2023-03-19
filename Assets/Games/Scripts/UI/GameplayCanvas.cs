@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 using DG.Tweening;
 using Game.Events;
+using Unity.VisualScripting;
 
 public class GameplayCanvas : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class GameplayCanvas : MonoBehaviour
     private Transform startPoint;
     [SerializeField]
     private float animationSpeed = 1;
+
+    private System.Collections.Generic.Dictionary<string, Vector3> initPosition = new System.Collections.Generic.Dictionary<string, Vector3>();
 
     private void Start()
     {
@@ -64,19 +67,26 @@ public class GameplayCanvas : MonoBehaviour
 
     private void Open(Button button)
     {
-        Vector3 initPos = button.transform.position;
-        Sequence openingSequence = DOTween.Sequence();
+        if (!initPosition.ContainsKey(button.name))
+        {
+            initPosition.Add(button.name, button.transform.position);
+        }
+
+        DG.Tweening.Sequence openingSequence = DOTween.Sequence();
         button.transform.position = startPoint.position;
 
-        openingSequence.Append(button.transform.DOMove(initPos, animationSpeed));
+        openingSequence.Append(button.transform.DOMove(initPosition[button.name], animationSpeed));
     }
 
     private void Close(Button button)
     {
-        Vector3 initPos = button.transform.position;
+        if (!initPosition.ContainsKey(button.name))
+        {
+            initPosition.Add(button.name, button.transform.position);
+        }
+
         button.transform.DOMove(startPoint.position, animationSpeed).OnComplete(() =>
         {
-            button.transform.position = initPos;
             gameObject.SetActive(false);
         });
     }

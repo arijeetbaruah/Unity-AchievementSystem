@@ -15,6 +15,14 @@ public class CombatStateMachine : StateMachine
         .OrderBy(c => c.Stats.Stats.speed)
         .ToList();
 
+    public List<CharacterDetails> activeAICharacter => activeOrderedCharacter
+        .Where(c => !c.isPlayer)
+        .ToList();
+
+    public List<CharacterDetails> activePlayerCharacter => activeOrderedCharacter
+        .Where(c => c.isPlayer)
+        .ToList();
+
     public Queue<CharacterDetails> combatOrder;
 
     public CombatStateMachine(GridManager gridManager)
