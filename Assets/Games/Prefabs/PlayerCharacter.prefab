@@ -591,8 +591,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 493328880}
-  m_LocalRotation: {x: 0.15253499, y: 0.37075722, z: -0.21480356, w: 0.8905794}
-  m_LocalPosition: {x: -2.322953, y: 0.12677014, z: 4.0192237}
+  m_LocalRotation: {x: 0.15253422, y: 0.37075704, z: -0.21480383, w: 0.89057946}
+  m_LocalPosition: {x: -2.3229532, y: 0.12676704, z: 4.0191975}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -805,8 +805,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 527184104}
-  m_LocalRotation: {x: 0.098622985, y: 0.37927368, z: -0.19009055, w: 0.9001614}
-  m_LocalPosition: {x: -2.3050396, y: 0.11921382, z: 3.99887}
+  m_LocalRotation: {x: 0.098622315, y: 0.37927347, z: -0.19009088, w: 0.9001615}
+  m_LocalPosition: {x: -2.3050392, y: 0.11921066, z: 3.9988441}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -949,8 +949,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 791161338}
-  m_LocalRotation: {x: -0.033914514, y: -0.96596885, z: 0.17352137, w: -0.18879731}
-  m_LocalPosition: {x: -2.1500688, y: 3.78, z: 5.290229}
+  m_LocalRotation: {x: -0.03391468, y: -0.96596867, z: 0.17352217, w: -0.18879732}
+  m_LocalPosition: {x: -2.150059, y: 3.78, z: 5.290202}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2421,8 +2421,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2129450280}
-  m_LocalRotation: {x: -0.0085834535, y: 0.35937968, z: -0.12963423, w: 0.9241037}
-  m_LocalPosition: {x: -2.1183891, y: 0.048163533, z: 3.8074882}
+  m_LocalRotation: {x: -0.008584212, y: 0.35937977, z: -0.12963457, w: 0.9241036}
+  m_LocalPosition: {x: -2.11839, y: 0.048160374, z: 3.8074627}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2637,7 +2637,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1319517528997712, guid: 1543549dcdf638d488bd40cb68dd9b8e, type: 3}
       propertyPath: m_Name
-      value: RPGHeroPBR Variant
+      value: PlayerCharacter
       objectReference: {fileID: 0}
     - target: {fileID: 1319517528997712, guid: 1543549dcdf638d488bd40cb68dd9b8e, type: 3}
       propertyPath: m_IsActive
@@ -2700,11 +2700,6 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: bc3722ce56e0cf64d98dd25f529591e2, type: 2}
-    - target: {fileID: 137009489777564250, guid: 1543549dcdf638d488bd40cb68dd9b8e,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 02c5de403dcbe8d4c89616514afb8787, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -2774,7 +2769,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 475cd36820954144d89f65d245de0ad6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterID: test
+  characterID: player
   characterStats: {fileID: 2061005751}
   hpBar: {fileID: 345815959}
   manaBar: {fileID: 1555271347}
@@ -2785,7 +2780,7 @@ MonoBehaviour:
   vcam: {fileID: 791161340}
   currentHP: 300
   currentMana: 0
-  isPlayer: 0
+  isPlayer: 1
   OnDamageEvent:
     m_PersistentCalls:
       m_Calls: []
