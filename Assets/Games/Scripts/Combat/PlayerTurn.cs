@@ -6,12 +6,8 @@ using Game.Service;
 using Game.Events;
 using Game.Logger;
 
-public class PlayerTurn : IState
+public class PlayerTurn : BaseState
 {
-    private CombatStateMachine combatStateMachine;
-    private CharacterDetails characterDetails;
-    private EventManager eventManager => ServiceRegistry.Get<EventManager>();
-
     private List<CharacterDetails> targetingCharacter;
     private int currentTargetIndex = 0;
     private int previousTargetIndex = -1;
@@ -20,10 +16,8 @@ public class PlayerTurn : IState
     private bool attacking = false;
     private float waitingTimer = 1;
 
-    public PlayerTurn(CombatStateMachine combatStateMachine, CharacterDetails characterDetails)
+    public PlayerTurn(CombatStateMachine combatStateMachine, CharacterDetails characterDetails) : base(combatStateMachine, characterDetails)
     {
-        this.combatStateMachine = combatStateMachine;
-        this.characterDetails = characterDetails;
     }
 
     public void OnAttack(AttackButtonClickEvent @event)
@@ -48,7 +42,7 @@ public class PlayerTurn : IState
         previousTargetIndex = currentTargetIndex;
     }
 
-    public void OnStart()
+    public override void OnStart()
     {
         characterDetails.VirtualCamera.Priority = 100;
         attacking = false;
@@ -57,7 +51,7 @@ public class PlayerTurn : IState
         eventManager.AddListener<AttackButtonClickEvent>(OnAttack);
     }
 
-    public void OnUpdate(float deltaTime)
+    public override void OnUpdate(float deltaTime)
     {
         if (targeting)
         {
@@ -95,22 +89,13 @@ public class PlayerTurn : IState
             waitingTimer -= deltaTime;
             if (waitingTimer < 0)
             {
-                CharacterDetails nextCharacter = combatStateMachine.GetNextCombatant();
-
-                if (nextCharacter.isPlayer)
-                {
-                    combatStateMachine.SetState(new PlayerTurn(combatStateMachine, nextCharacter));
-                }
-                else
-                {
-                    combatStateMachine.SetState(new AITurn(combatStateMachine, nextCharacter));
-                }
+                GoToNextTurn();
             }
         }
 
     }
 
-    public void OnEnd()
+    public override void OnEnd()
     {
         characterDetails.VirtualCamera.Priority = 50;
     }
