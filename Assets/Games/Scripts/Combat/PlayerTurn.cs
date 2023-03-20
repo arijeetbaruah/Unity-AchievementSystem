@@ -20,9 +20,14 @@ public class PlayerTurn : BaseState
     {
     }
 
+    public void OnCharacterDeath(OnCharacterDeath @event)
+    {
+        previousTargetIndex = -1;
+    }
+
     public void OnAttack(AttackButtonClickEvent @event)
     {
-        characterDetails.GameplayCanvas.OpenAll();
+        characterDetails.GameplayCanvas.CloseAll();
         targetingCharacter = new List<CharacterDetails>(combatStateMachine.activeAICharacter);
         currentTargetIndex = 0;
         targeting = true;
@@ -49,6 +54,7 @@ public class PlayerTurn : BaseState
         targeting = false;
         characterDetails.GameplayCanvas.OpenAll();
         eventManager.AddListener<AttackButtonClickEvent>(OnAttack);
+        eventManager.AddListener<OnCharacterDeath>(OnCharacterDeath);
     }
 
     public override void OnUpdate(float deltaTime)
@@ -98,5 +104,7 @@ public class PlayerTurn : BaseState
     public override void OnEnd()
     {
         characterDetails.VirtualCamera.Priority = 50;
+        eventManager.RemoveListener<AttackButtonClickEvent>(OnAttack);
+        eventManager.RemoveListener<OnCharacterDeath>(OnCharacterDeath);
     }
 }

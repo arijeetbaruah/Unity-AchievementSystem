@@ -4,6 +4,8 @@ using UnityEngine.UI;
 using DG.Tweening;
 using Game.Events;
 using Unity.VisualScripting;
+using System.Collections.Generic;
+using UnityEngine.EventSystems;
 
 public class GameplayCanvas : MonoBehaviour
 {
@@ -20,15 +22,10 @@ public class GameplayCanvas : MonoBehaviour
 
     private System.Collections.Generic.Dictionary<string, Vector3> initPosition = new System.Collections.Generic.Dictionary<string, Vector3>();
 
-    private void Start()
+    private List<Button> buttons => new List<Button>()
     {
-        attackButton.onClick.AddListener(() =>
-        {
-            Close(attackButton);
-            Close(magicButton);
-            Close(itemButton);
-        });
-    }
+        attackButton, magicButton, itemButton
+    };
 
     private void OnEnable()
     {
@@ -49,45 +46,49 @@ public class GameplayCanvas : MonoBehaviour
         EventManager.Trigger<T>(new T());
     }
 
+    public void Initialized()
+    {
+        foreach(var button in buttons)
+        {
+            if (!initPosition.ContainsKey(button.name))
+            {
+                initPosition.Add(button.name, button.transform.position);
+            }
+            button.transform.position = startPoint.position;
+        }
+    }
+
     public void OpenAll()
     {
-        gameObject.SetActive(true);
+        Initialized();
 
-        Open(attackButton);
-        Open(magicButton);
-        Open(itemButton);
+        gameObject.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(null);
+        foreach(var button in buttons)
+        {
+            Open(button);
+        }
     }
 
     public void CloseAll()
     {
-        Close(attackButton);
-        Close(magicButton);
-        Close(itemButton);
+        foreach (var button in buttons)
+        {
+            Close(button);
+        }
     }
 
     private void Open(Button button)
     {
-        if (!initPosition.ContainsKey(button.name))
-        {
-            initPosition.Add(button.name, button.transform.position);
-        }
-
-        DG.Tweening.Sequence openingSequence = DOTween.Sequence();
-        button.transform.position = startPoint.position;
-
-        openingSequence.Append(button.transform.DOMove(initPosition[button.name], animationSpeed));
+        button.gameObject.SetActive(true);
+        button.transform.DOMove(initPosition[button.name], animationSpeed);
     }
 
     private void Close(Button button)
     {
-        if (!initPosition.ContainsKey(button.name))
-        {
-            initPosition.Add(button.name, button.transform.position);
-        }
-
         button.transform.DOMove(startPoint.position, animationSpeed).OnComplete(() =>
         {
-            gameObject.SetActive(false);
+            button.gameObject.SetActive(false);
         });
     }
 }

@@ -7,6 +7,7 @@ using UnityEngine.Events;
 
 using DG.Tweening;
 using Cinemachine;
+using Game.Events;
 
 public class CharacterDetails : MonoBehaviour
 {
@@ -82,10 +83,19 @@ public class CharacterDetails : MonoBehaviour
         if (currentHP == 0)
         {
             OnDeathEvent?.Invoke(characterID, dmg, currentHP);
+            EventManager.Trigger<OnCharacterDeath>(new OnCharacterDeath());
         }
         else
         {
             OnDamageEvent?.Invoke(characterID, dmg, currentHP);
         }
+    }
+}
+
+public class OnCharacterDeath : GameEvent
+{
+    public OnCharacterDeath()
+    {
+
     }
 }
