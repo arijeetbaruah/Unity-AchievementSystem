@@ -2777,6 +2777,7 @@ MonoBehaviour:
     type: 3}
   dmgTxtParent: {fileID: 234330917}
   gameplayCanvas: {fileID: 7941649527523442932}
+  animator: {fileID: 8027015826923647433}
   vcam: {fileID: 791161340}
   currentHP: 300
   currentMana: 0
@@ -2790,6 +2791,12 @@ MonoBehaviour:
 --- !u!4 &7942529331882934175 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4468913360964282, guid: 1543549dcdf638d488bd40cb68dd9b8e,
+    type: 3}
+  m_PrefabInstance: {fileID: 7941649528626165029}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &8027015826923647433 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 95658022555206892, guid: 1543549dcdf638d488bd40cb68dd9b8e,
     type: 3}
   m_PrefabInstance: {fileID: 7941649528626165029}
   m_PrefabAsset: {fileID: 0}

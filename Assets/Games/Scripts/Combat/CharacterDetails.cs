@@ -11,6 +11,9 @@ using Game.Events;
 
 public class CharacterDetails : MonoBehaviour
 {
+    private readonly int TakeHitAnimationHash = Animator.StringToHash("TakeDamage");
+    private readonly int DeathAnimationHash = Animator.StringToHash("TakeDamage");
+
     public string characterID;
 
     [SerializeField]
@@ -25,6 +28,8 @@ public class CharacterDetails : MonoBehaviour
     private Transform dmgTxtParent;
     [SerializeField]
     private GameplayCanvas gameplayCanvas;
+    [SerializeField]
+    private Animator animator;
 
     [SerializeField]
     private CinemachineVirtualCamera vcam;
@@ -88,6 +93,7 @@ public class CharacterDetails : MonoBehaviour
         else
         {
             OnDamageEvent?.Invoke(characterID, dmg, currentHP);
+            animator.Play(TakeHitAnimationHash);
         }
     }
 }
