@@ -42,6 +42,8 @@ public class CharacterDetails : MonoBehaviour
     public UnityEvent<string, int, int> OnDamageEvent;
     public UnityEvent<string, int, int> OnDeathEvent;
 
+    public ICombatCommand normalAttack;
+
     public CharacterStats Stats => characterStats;
     public GameplayCanvas GameplayCanvas => gameplayCanvas;
     public CinemachineVirtualCamera VirtualCamera => vcam;

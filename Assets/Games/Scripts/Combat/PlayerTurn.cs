@@ -81,12 +81,11 @@ public class PlayerTurn : BaseState
             }
             if (Input.GetKeyDown(KeyCode.Return))
             {
-                var target = targetingCharacter[currentTargetIndex];
-                int attack = characterDetails.Stats.Stats.attack;
-                int dmg = target.Stats.CalculateDamage(attack, 5);
-                target.TakeDamage(dmg);
-                targeting = false;
-                attacking = true;
+                characterDetails.normalAttack.Execute(targetingCharacter[currentTargetIndex], characterDetails.Stats, () =>
+                {
+                    targeting = false;
+                    attacking = true;
+                });
             }
         }
 
