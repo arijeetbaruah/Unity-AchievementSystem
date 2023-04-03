@@ -22,6 +22,37 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 738e71e3288f1a247be9deb37bd243c3
+    m_Address: Assets/Games/Prefabs/DamageText.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e3c25f099c724b346ad9765b685bd1b4
+    m_Address: Assets/Games/Prefabs/GameplayCanvas.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b452e50f5e097584cab93a314026343f
+    m_Address: Assets/Games/Prefabs/RPGHeroPBR Variant.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e1f89c62fedc9e94fa5fe7bd900cacdf
+    m_Address: Assets/Games/Prefabs/PlayerCharacter.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 65049b45ca088e846bd8cadef0d80433
+    m_Address: Assets/Games/Prefabs/PlayerHPHUD.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: e423651b042674d44958f0efdfb93e2f, type: 2}
   m_SchemaSet:

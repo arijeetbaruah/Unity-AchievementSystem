@@ -58,6 +58,11 @@ namespace Game.Logger
 
             string filters = string.Join("", setFlags.Where(c => c != FilterLog.Default).Select(flag => $"[{flag}]"));
 
+            if (string.IsNullOrEmpty(filters))
+            {
+                filters = $"[{FilterLog.Default}]";
+            }
+
             string logColor = colorMap[ setFlags.Last() ].ToString();
 
             return (filters, logColor);

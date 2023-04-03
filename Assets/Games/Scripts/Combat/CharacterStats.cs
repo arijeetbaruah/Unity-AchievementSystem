@@ -46,4 +46,6 @@ public struct Stats
     public int magicDefense;
     [ProgressBar(0f, 100f)]
     public int speed;
+    [ProgressBar(0f, 100f)]
+    public int maxCharge;
 }

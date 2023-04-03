@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.Events;
 
 using DG.Tweening;
 using Cinemachine;
 using Game.Events;
+using Game.Service;
 
 public class CharacterDetails : MonoBehaviour
 {
@@ -19,41 +21,47 @@ public class CharacterDetails : MonoBehaviour
     [SerializeField]
     private CharacterStats characterStats;
     [SerializeField]
-    private HPBar hpBar;
-    [SerializeField]
-    private HPBar manaBar;
-    [SerializeField]
-    private TextMeshProUGUI dmgTxtPrefab;
-    [SerializeField]
-    private Transform dmgTxtParent;
-    [SerializeField]
     private GameplayCanvas gameplayCanvas;
     [SerializeField]
     private Animator animator;
+    [SerializeField]
+    private HPBar AIHPBar;
 
     [SerializeField]
     private CinemachineVirtualCamera vcam;
 
     public int currentHP;
     public int currentMana;
+    public int currentMax;
 
     public bool isPlayer;
 
     public UnityEvent<string, int, int> OnDamageEvent;
     public UnityEvent<string, int, int> OnDeathEvent;
 
+    [ShowInInspector, SerializeReference]
     public ICombatCommand normalAttack;
 
     public CharacterStats Stats => characterStats;
     public GameplayCanvas GameplayCanvas => gameplayCanvas;
     public CinemachineVirtualCamera VirtualCamera => vcam;
 
-    private void Start()
+    private IEnumerator Start()
     {
         currentHP = characterStats.Stats.maxHP;
         currentMana = characterStats.Stats.maxMana;
-        hpBar.SetHP(currentHP, characterStats.Stats.maxHP);
-        manaBar.SetHP(currentMana, characterStats.Stats.maxMana);
+        currentMax = 0;
+
+        yield return null;
+
+        if (isPlayer)
+        {
+            EventManager.Trigger(new CreatePlayerHUD(this));
+        }
+        else
+        {
+            AIHPBar?.SetHP(currentHP, Stats.Stats.maxHP);
+        }
     }
 
     private void Update()
@@ -72,25 +80,20 @@ public class CharacterDetails : MonoBehaviour
     public void UseMana(int amount)
     {
         currentMana = Mathf.Max(0, currentMana - amount);
-        manaBar.SetHP(currentMana, characterStats.Stats.maxMana);
     }
 
     public void TakeDamage(int dmg)
     {
         currentHP = Mathf.Max(0, currentHP - dmg);
-        hpBar.SetHP(currentHP, characterStats.Stats.maxHP);
-        var dmgTxt = Instantiate(dmgTxtPrefab, dmgTxtParent);
-        dmgTxt.SetText(dmg.ToString());
+        EventManager.Trigger<PlayerUpdateHP>(new PlayerUpdateHP(characterID, currentHP));
+        AIHPBar?.SetHP(currentHP, Stats.Stats.maxHP);
 
-        dmgTxt.transform.DOMoveY(10, 3).OnComplete(() =>
-        {
-            Destroy(dmgTxt.gameObject);
-        });
 
         if (currentHP == 0)
         {
             OnDeathEvent?.Invoke(characterID, dmg, currentHP);
             EventManager.Trigger<OnCharacterDeath>(new OnCharacterDeath());
+            animator.Play(DeathAnimationHash);
         }
         else
         {

@@ -18,6 +18,7 @@ public class ServiceBinder : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         Log.Initialization(new UnityLogger());
+        Log.Print("hi", FilterLog.GameEvent);
 
         ServiceRegistry.Initialize();
         
