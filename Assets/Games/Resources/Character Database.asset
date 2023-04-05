@@ -13,5 +13,15 @@ MonoBehaviour:
   m_Name: Character Database
   m_EditorClassIdentifier: 
   characters:
-  - {fileID: 2061005752, guid: b452e50f5e097584cab93a314026343f, type: 3}
-  - {fileID: 2061005752, guid: e1f89c62fedc9e94fa5fe7bd900cacdf, type: 3}
+  - key: Player
+    value:
+      m_AssetGUID: e1f89c62fedc9e94fa5fe7bd900cacdf
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - key: Enemy 1
+    value:
+      m_AssetGUID: b452e50f5e097584cab93a314026343f
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0

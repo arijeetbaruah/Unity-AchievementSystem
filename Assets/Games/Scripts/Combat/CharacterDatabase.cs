@@ -1,23 +1,25 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-using Sirenix.OdinInspector;
 using Sirenix.Utilities;
+using UnityEngine.AddressableAssets;
+using Sirenix.OdinInspector;
 using System.Linq;
 
 [GlobalConfig, CreateAssetMenu]
 public class CharacterDatabase : GlobalConfig<CharacterDatabase> 
 {
-    public List<CharacterDetails> characters;
+    public List<CharacterDetailReferenceListElement> characters;
 
     [ReadOnly, ShowInInspector]
-    public SerializedCharacterDetailsDictionary characterDatabase => new SerializedCharacterDetailsDictionary(characters.ToDictionary(c => c.characterID));
+    public Dictionary<string, AssetReference> references => 
+        characters.ToDictionary(e => e.key, e => e.value);
+
+    [System.Serializable]
+    public struct CharacterDetailReferenceListElement
+    {
+        public string key;
+        public AssetReference value;
+    }
 }
 
-[System.Serializable]
-public class SerializedCharacterDetailsDictionary : UnitySerializedDictionary<string, CharacterDetails>
-{
-    public SerializedCharacterDetailsDictionary() : base() { }
-    public SerializedCharacterDetailsDictionary(Dictionary<string, CharacterDetails> dic) : base(dic) { }
-}
