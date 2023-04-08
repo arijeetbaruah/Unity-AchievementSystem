@@ -5,6 +5,7 @@ using Sirenix.Utilities;
 using UnityEngine.AddressableAssets;
 using Sirenix.OdinInspector;
 using System.Linq;
+using System;
 
 [GlobalConfig, CreateAssetMenu]
 public class CharacterDatabase : GlobalConfig<CharacterDatabase> 

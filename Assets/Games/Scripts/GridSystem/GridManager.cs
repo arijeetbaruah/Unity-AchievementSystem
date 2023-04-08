@@ -12,10 +12,12 @@ public class GridManager : MonoBehaviour
     [SerializeField, MinValue(1)]
     private float cellSize = 1;
     [SerializeField]
-    private Vector2 offset;
+    private Vector3 offset;
 
     private Grid<GameObject> grid;
     GameObject gridHolder;
+
+    public Vector2 GetSize => new Vector2 { x = width, y = height };
 
     private void Awake()
     {
@@ -27,6 +29,11 @@ public class GridManager : MonoBehaviour
 
             return cell;
         });
+    }
+
+    public Transform GetCell(int x, int y)
+    {
+        return grid.GetCell(x, y).value.transform;
     }
 
 

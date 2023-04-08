@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Game.StateMachines;
 using System.Linq;
+using Game.Service;
+using Game.Events;
 
 public class CombatStateMachine : StateMachine
 {
@@ -28,9 +30,45 @@ public class CombatStateMachine : StateMachine
     public CombatStateMachine(GridManager gridManager)
     {
         this.gridManager = gridManager;
-        registeredCharacters = new List<CharacterDetails>(GameObject.FindObjectsOfType<CharacterDetails>());
+        registeredCharacters = new List<CharacterDetails>();
+        GameManager.instance.playerInitCompleted = false;
+
+        EventManager.Trigger<AsyncEvent>(new AsyncEvent(InitantiateCharacters()));
 
         SetState(new InitState(this));
+    }
+
+    private IEnumerator InitantiateCharacters()
+    {
+        yield return ServiceRegistry.Get<CharacterSpawnerService>().InstantiateCharacter(
+            "Player",
+            gridManager.GetCell(CalculatePositionX(activePlayerCharacter.Count), 0),
+            playerGO =>
+            {
+                registeredCharacters.Add(playerGO.GetComponent<CharacterDetails>());
+            });
+
+        for (int i = 0; i < 3; i++)
+        {
+            yield return ServiceRegistry.Get<CharacterSpawnerService>().InstantiateCharacter(
+                "Enemy 1",
+                gridManager.GetCell(CalculatePositionX(activeAICharacter.Count), 3),
+                playerGO =>
+                {
+                    CharacterDetails character = playerGO.GetComponent<CharacterDetails>();
+                    character.characterID = $"{character.characterID} {i + 1}";
+                    registeredCharacters.Add(character);
+                });
+        }
+
+        GameManager.instance.playerInitCompleted = true;
+    }
+
+    private int CalculatePositionX(int count)
+    {
+        int pos = count / 2;
+
+        return pos * (count % 2 == 0 ? -1 : 1) + (int) gridManager.GetSize.x / 2;
     }
 
     public CharacterDetails GetNextCombatant()

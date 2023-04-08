@@ -21,6 +21,12 @@ MonoBehaviour:
       m_EditorAssetChanged: 0
   - key: Enemy 1
     value:
+      m_AssetGUID: 37be4f428d322c348b25ff383eafb487
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - key: Boss 1
+    value:
       m_AssetGUID: b452e50f5e097584cab93a314026343f
       m_SubObjectName: 
       m_SubObjectType: 

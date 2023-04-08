@@ -35,6 +35,12 @@ public class Grid<T>
 
                 var pos = cells[x, y].GetPosition();
                 var value = initiator(pos);
+                if (value is GameObject)
+                {
+                    GameObject go = value as GameObject;
+                    go.name = $"({x}, {y})";
+                }
+
                 cells[x, y].value = value;
             }
         }

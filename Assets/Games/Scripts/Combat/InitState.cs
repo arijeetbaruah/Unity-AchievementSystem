@@ -24,7 +24,7 @@ public class InitState : IState
     {
         waitTimer -= deltaTime;
 
-        if (waitTimer <= 0)
+        if (waitTimer <= 0 && GameManager.instance.playerInitCompleted)
         {
             CharacterDetails nextCharacter = combatStateMachine.GetNextCombatant();
 

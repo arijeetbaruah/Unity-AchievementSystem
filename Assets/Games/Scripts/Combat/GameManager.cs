@@ -11,8 +11,8 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     private GridManager gridManager;
-
-    private int currentTurn = 0;
+    
+    public bool playerInitCompleted;
 
     private void Start()
     {
