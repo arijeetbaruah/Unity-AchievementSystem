@@ -42,17 +42,25 @@ public class CombatStateMachine : StateMachine
     {
         yield return ServiceRegistry.Get<CharacterSpawnerService>().InstantiateCharacter(
             "Player",
-            gridManager.GetCell(CalculatePositionX(activePlayerCharacter.Count), 0),
+            gridManager.GetCell(CalculatePositionX(activePlayerCharacter.Count), 4),
             playerGO =>
             {
                 registeredCharacters.Add(playerGO.GetComponent<CharacterDetails>());
             });
 
-        for (int i = 0; i < 3; i++)
+        yield return ServiceRegistry.Get<CharacterSpawnerService>().InstantiateCharacter(
+            "Boss 1",
+            gridManager.GetCell(CalculatePositionX(activeAICharacter.Count), 6),
+            playerGO =>
+            {
+                registeredCharacters.Add(playerGO.GetComponent<CharacterDetails>());
+            });
+
+        for (int i = 0; i < 2; i++)
         {
             yield return ServiceRegistry.Get<CharacterSpawnerService>().InstantiateCharacter(
                 "Enemy 1",
-                gridManager.GetCell(CalculatePositionX(activeAICharacter.Count), 3),
+                gridManager.GetCell(CalculatePositionX(activeAICharacter.Count), 6),
                 playerGO =>
                 {
                     CharacterDetails character = playerGO.GetComponent<CharacterDetails>();
@@ -66,9 +74,9 @@ public class CombatStateMachine : StateMachine
 
     private int CalculatePositionX(int count)
     {
-        int pos = count / 2;
+        int pos = Mathf.CeilToInt((float)count / 2f);
 
-        return pos * (count % 2 == 0 ? -1 : 1) + (int) gridManager.GetSize.x / 2;
+        return (pos * (count % 2 == 0 ? -1 : 1)) + (int) gridManager.GetSize.x / 2;
     }
 
     public CharacterDetails GetNextCombatant()
