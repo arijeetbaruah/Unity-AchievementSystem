@@ -24,7 +24,13 @@ MonoBehaviour:
     - character
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b452e50f5e097584cab93a314026343f
-    m_Address: Assets/Games/Prefabs/RPGHeroPBR Variant.prefab
+    m_Address: Assets/Games/Prefabs/RPG Boss.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - character
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 37be4f428d322c348b25ff383eafb487
+    m_Address: Assets/Games/Prefabs/RPG Enemy.prefab
     m_ReadOnly: 0
     m_SerializedLabels:
     - character

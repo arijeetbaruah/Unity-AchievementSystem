@@ -13,8 +13,11 @@ public class PlayerTurn : BaseState
     private int previousTargetIndex = -1;
 
     private bool targeting = false;
+    private bool superAttack = false;
     private bool attacking = false;
     private float waitingTimer = 1;
+
+    private ICombatCommand selectedAttack = null;
 
     public PlayerTurn(CombatStateMachine combatStateMachine, CharacterDetails characterDetails) : base(combatStateMachine, characterDetails)
     {
@@ -31,9 +34,23 @@ public class PlayerTurn : BaseState
         targetingCharacter = new List<CharacterDetails>(combatStateMachine.activeAICharacter);
         currentTargetIndex = 0;
         targeting = true;
+        selectedAttack = characterDetails.normalAttack;
         ShowTarget();
 
         Log.Print("On Player Attack", FilterLog.Game);
+    }
+
+    public void OnSuperAttack(SuperAttackButtonClickEvent @event)
+    {
+        characterDetails.GameplayCanvas.CloseAll();
+        targetingCharacter = new List<CharacterDetails>(combatStateMachine.activeAICharacter);
+        currentTargetIndex = 0;
+        superAttack = true;
+        targeting = true;
+        selectedAttack = characterDetails.superAttack;
+        ShowTarget();
+
+        Log.Print("On Player Super Attack", FilterLog.Game);
     }
 
     public void ShowTarget()
@@ -51,9 +68,14 @@ public class PlayerTurn : BaseState
     {
         characterDetails.VirtualCamera.Priority = 100;
         attacking = false;
+        superAttack = false;
         targeting = false;
         characterDetails.GameplayCanvas.OpenAll();
+
+        characterDetails.GameplayCanvas.SuperButton.interactable = characterDetails.currentMax == characterDetails.Stats.Stats.maxCharge;
+
         eventManager.AddListener<AttackButtonClickEvent>(OnAttack);
+        eventManager.AddListener<SuperAttackButtonClickEvent>(OnSuperAttack);
         eventManager.AddListener<OnCharacterDeath>(OnCharacterDeath);
     }
 
@@ -81,11 +103,18 @@ public class PlayerTurn : BaseState
             }
             if (Input.GetKeyDown(KeyCode.Return))
             {
-                characterDetails.normalAttack.Execute(targetingCharacter[currentTargetIndex], characterDetails.Stats, () =>
+                selectedAttack.Execute(targetingCharacter[currentTargetIndex], characterDetails.Stats, () =>
                 {
                     targeting = false;
                     attacking = true;
                 });
+
+                if (superAttack)
+                {
+                    EventManager.Trigger(new ResetPlayerCharge(characterDetails.characterID));
+                }
+
+                EventManager.Trigger(new ChargeMax(characterDetails.characterID, new List<string>() { targetingCharacter[currentTargetIndex].characterID }, 5));
             }
         }
 

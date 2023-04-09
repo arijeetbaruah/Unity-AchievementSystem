@@ -36,13 +36,35 @@ namespace Game.Events
         }
     }
 
+    public class PlayerUpdateCharge : GameEvent
+    {
+        public string playerID;
+        public float amount;
+
+        public PlayerUpdateCharge(string playerID, float amount)
+        {
+            this.playerID = playerID;
+            this.amount = amount;
+        }
+    }
+
+    public class ResetPlayerCharge : GameEvent
+    {
+        public string playerID;
+
+        public ResetPlayerCharge(string playerID)
+        {
+            this.playerID = playerID;
+        }
+    }
+
     public class ChargeMax : GameEvent
     {
         public string attackerID;
         public List<string> targetID;
-        public float amount;
+        public int amount;
 
-        public ChargeMax(string attackerID, List<string> targetID, float amount)
+        public ChargeMax(string attackerID, List<string> targetID, int amount)
         {
             this.attackerID = attackerID;
             this.targetID = targetID;

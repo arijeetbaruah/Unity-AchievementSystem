@@ -1141,6 +1141,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerName: {fileID: 5005282061863076963}
   bg: {fileID: 5005282062118263773}
+  chargeImg: {fileID: 1631822821}
   hpBar: {fileID: 5005282061892290395}
   manaBar: {fileID: 5005282063352564782}
   maxBar: {fileID: 115057646}
@@ -1453,8 +1454,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bar: {fileID: 5005282061989260520}
   backBar: {fileID: 5005282062391021874}
-  startColor: {r: 0, g: 1, b: 0, a: 1}
-  endColor: {r: 1, g: 0, b: 0, a: 1}
+  startColor: {r: 0, g: 0.9911959, b: 1, a: 1}
+  endColor: {r: 0.3726415, g: 0.42339942, b: 1, a: 1}
   lerpAt: 0.5
   amountTxt: {fileID: 5005282062178452427}
 --- !u!1 &8757759397917207713

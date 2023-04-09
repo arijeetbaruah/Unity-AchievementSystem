@@ -42,6 +42,9 @@ public class CharacterDetails : MonoBehaviour
     [ShowInInspector, SerializeReference]
     public ICombatCommand normalAttack;
 
+    [ShowInInspector, SerializeReference]
+    public ICombatCommand superAttack;
+
     public CharacterStats Stats => characterStats;
     public GameplayCanvas GameplayCanvas => gameplayCanvas;
     public CinemachineVirtualCamera VirtualCamera => vcam;
@@ -77,6 +80,39 @@ public class CharacterDetails : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        ServiceRegistry.Get<EventManager>().AddListener<ChargeMax>(ChargeMax);
+        ServiceRegistry.Get<EventManager>().AddListener<ResetPlayerCharge>(ResetPlayerCharge);
+    }
+
+    private void OnDisable()
+    {
+        ServiceRegistry.Get<EventManager>().RemoveListener<ChargeMax>(ChargeMax);
+        ServiceRegistry.Get<EventManager>().RemoveListener<ResetPlayerCharge>(ResetPlayerCharge);
+    }
+
+    public void ResetPlayerCharge(ResetPlayerCharge resetPlayerCharge)
+    {
+        if (resetPlayerCharge.playerID == characterID)
+        {
+            currentMax = 0;
+            gameplayCanvas.SuperButton.interactable = false;
+        }
+    }
+
+    public void ChargeMax(ChargeMax chargeMax)
+    {
+        if (chargeMax.attackerID == characterID || chargeMax.targetID.Contains(characterID))
+        {
+            currentMax = Mathf.Min(currentMax + chargeMax.amount, Stats.Stats.maxCharge);
+
+            gameplayCanvas.SuperButton.interactable = currentMax == Stats.Stats.maxCharge;
+
+            EventManager.Trigger(new PlayerUpdateCharge(characterID, currentMax));
+        }
+    }
+
     public void UseMana(int amount)
     {
         currentMana = Mathf.Max(0, currentMana - amount);
@@ -87,7 +123,6 @@ public class CharacterDetails : MonoBehaviour
         currentHP = Mathf.Max(0, currentHP - dmg);
         EventManager.Trigger<PlayerUpdateHP>(new PlayerUpdateHP(characterID, currentHP));
         AIHPBar?.SetHP(currentHP, Stats.Stats.maxHP);
-
 
         if (currentHP == 0)
         {

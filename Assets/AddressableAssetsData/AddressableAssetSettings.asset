@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: 8cd18fc7527911f4993b841048fd1ccc
   m_currentHash:
     serializedVersion: 2
-    Hash: 6937fcbfaea80f64b712c0f62459c40b
+    Hash: 9db951c209233d23ae6486a68e2673d1
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_BundleLocalCatalog: 0
@@ -48,6 +48,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7abadf706adda6740baeaf50446d5215, type: 2}
   - {fileID: 11400000, guid: 6baa723f84657c24f9fa00b0051ede86, type: 2}
   - {fileID: 11400000, guid: 274ed170358a684409edf3a1456b7f88, type: 2}
+  - {fileID: 11400000, guid: 65910c8cd01369e4187fb2432f2e1af0, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1
@@ -91,6 +92,7 @@ MonoBehaviour:
     - default
     - achievement
     - character
+    - scene
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 75d2466008e25e14b93888bea5c4f18a, type: 2}

@@ -1,3 +1,4 @@
+using DG.Tweening;
 using Game.Events;
 using Game.Service;
 using System.Collections;
@@ -15,6 +16,8 @@ public class PlayerHPHUD : MonoBehaviour
     [SerializeField]
     private Image bg;
     [SerializeField]
+    private Image chargeImg;
+    [SerializeField]
     private HPBar hpBar;
     [SerializeField]
     private HPBar manaBar;
@@ -31,6 +34,8 @@ public class PlayerHPHUD : MonoBehaviour
     {
         ServiceRegistry.Get<EventManager>().AddListener<PlayerUpdateHP>(UpdatePlayerHP);
         ServiceRegistry.Get<EventManager>().AddListener<PlayerUpdateMana>(UpdatePlayerMana);
+        ServiceRegistry.Get<EventManager>().AddListener<PlayerUpdateCharge>(UpdatePlayerCharge);
+        ServiceRegistry.Get<EventManager>().AddListener<ResetPlayerCharge>(ResetPlayerCharge);
     }
 
     public void SetCharacterStats(CharacterDetails characterDetails)
@@ -42,6 +47,32 @@ public class PlayerHPHUD : MonoBehaviour
         hpBar.SetHP(characterDetails.currentHP, characterStats.Stats.maxHP);
         manaBar.SetHP(characterDetails.currentMana, characterStats.Stats.maxMana);
         maxBar.SetHP(characterDetails.currentMax, characterStats.Stats.maxCharge);
+    }
+
+    public void ResetPlayerCharge(ResetPlayerCharge resetPlayerCharge)
+    {
+        if (resetPlayerCharge.playerID == characterDetails.characterID)
+        {
+            maxBar.SetHP(0, characterDetails.Stats.Stats.maxCharge);
+        }
+    }
+
+    public void UpdatePlayerCharge(PlayerUpdateCharge playerUpdateCharge)
+    {
+        if (playerUpdateCharge.playerID == characterDetails.characterID)
+        {
+            maxBar.SetHP(playerUpdateCharge.amount, characterDetails.Stats.Stats.maxCharge);
+
+            if (playerUpdateCharge.amount == characterDetails.Stats.Stats.maxCharge)
+            {
+                Sequence sequence = DOTween.Sequence();
+                sequence.Append(chargeImg.DOColor(Color.red, 1));
+                sequence.Append(chargeImg.DOColor(Color.blue, 1));
+                sequence.Append(chargeImg.DOColor(Color.green, 1));
+                sequence.Append(chargeImg.DOColor(Color.yellow, 1));
+                sequence.SetLoops(99);
+            }
+        }
     }
 
     public void UpdatePlayerHP(PlayerUpdateHP playerUpdateHP)

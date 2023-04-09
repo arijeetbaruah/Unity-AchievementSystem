@@ -41,11 +41,6 @@ MonoBehaviour:
     m_SerializedLabels:
     - default
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 37be4f428d322c348b25ff383eafb487
-    m_Address: Assets/Games/Prefabs/RPGBoss.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: e423651b042674d44958f0efdfb93e2f, type: 2}
   m_SchemaSet:

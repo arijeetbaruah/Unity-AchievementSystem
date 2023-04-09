@@ -12,6 +12,7 @@ using UnityEngine.AddressableAssets;
 public class ServiceBinder : MonoBehaviour
 {
     public AssetReferenceGameObject assetRefernce;
+    public AssetReferenceScene nextScene;
 
     private void Awake()
     {
@@ -43,7 +44,7 @@ public class ServiceBinder : MonoBehaviour
 
         yield return new WaitForSeconds(3);
 
-        yield return SceneManager.LoadSceneAsync(1);
+        yield return Addressables.LoadSceneAsync(nextScene);
 
         yield return new WaitForSeconds(3);
 

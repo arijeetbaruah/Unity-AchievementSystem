@@ -16,6 +16,8 @@ public class GameplayCanvas : MonoBehaviour
     [SerializeField]
     private Button itemButton;
     [SerializeField]
+    private Button superButton;
+    [SerializeField]
     private Transform startPoint;
     [SerializeField]
     private float animationSpeed = 1;
@@ -24,14 +26,17 @@ public class GameplayCanvas : MonoBehaviour
 
     private List<Button> buttons => new List<Button>()
     {
-        attackButton, magicButton, itemButton
+        attackButton, magicButton, itemButton, superButton
     };
+
+    public Button SuperButton => superButton;
 
     private void OnEnable()
     {
         attackButton.onClick.AddListener(ButtonCallback<AttackButtonClickEvent>);
         magicButton.onClick.AddListener(ButtonCallback<MagicButtonClickEvent>);
         itemButton.onClick.AddListener(ButtonCallback<ItemButtonClickEvent>);
+        superButton.onClick.AddListener(ButtonCallback<SuperAttackButtonClickEvent>);
     }
 
     private void OnDisable()
@@ -39,6 +44,7 @@ public class GameplayCanvas : MonoBehaviour
         attackButton.onClick.RemoveListener(ButtonCallback<AttackButtonClickEvent>);
         magicButton.onClick.RemoveListener(ButtonCallback<MagicButtonClickEvent>);
         itemButton.onClick.RemoveListener(ButtonCallback<ItemButtonClickEvent>);
+        superButton.onClick.RemoveListener(ButtonCallback<SuperAttackButtonClickEvent>);
     }
 
     private void ButtonCallback<T>() where T : GameEvent, new()
@@ -104,6 +110,11 @@ public class MagicButtonClickEvent : GameEvent
 }
 
 public class ItemButtonClickEvent : GameEvent
+{
+
+}
+
+public class SuperAttackButtonClickEvent : GameEvent
 {
 
 }

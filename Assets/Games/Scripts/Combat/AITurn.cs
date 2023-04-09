@@ -5,6 +5,7 @@ using Game.StateMachines;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Diagnostics;
 
 public class AITurn : BaseState
 {
@@ -36,13 +37,16 @@ public class AITurn : BaseState
         }
         else if (waitTimer <= 2 && !attacked)
         {
+            attacked = true;
             characterDetails.VirtualCamera.Priority = 50;
             targetCharacter.VirtualCamera.Priority = 100;
 
             int attack = characterDetails.Stats.Stats.attack;
             int dmg = targetCharacter.Stats.CalculateDamage(attack, 5);
+
+            EventManager.Trigger(new ChargeMax(characterDetails.characterID, new List<string>() { targetCharacter.characterID }, 2));
+
             targetCharacter.TakeDamage(dmg);
-            attacked = true;
         }
     }
 

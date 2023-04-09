@@ -157,6 +157,11 @@ MonoBehaviour:
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
+  nextScene:
+    m_AssetGUID: df58578fd7189944aa425cc6e41e8a6e
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
 --- !u!4 &270889291
 Transform:
   m_ObjectHideFlags: 0
@@ -691,7 +696,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 55
 --- !u!114 &2018974924
 MonoBehaviour:
   m_ObjectHideFlags: 0
