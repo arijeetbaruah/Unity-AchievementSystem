@@ -1,3 +1,4 @@
+using Game.Events;
 using System;
 using UnityEngine;
 
@@ -15,7 +16,14 @@ public abstract class ICombatCommand : ScriptableObject
     public bool IsCrit()
     {
         float percent = UnityEngine.Random.Range(0f, 100f);
-        return percent < critRate;
+        bool ret = percent < critRate;
+
+        if (ret)
+        {
+            EventManager.Trigger(new CritEvent());
+        }
+
+        return ret;
     }
 }
 

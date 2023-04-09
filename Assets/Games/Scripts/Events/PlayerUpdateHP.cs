@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Game.Events
@@ -9,6 +10,30 @@ namespace Game.Events
         public CreatePlayerHUD(CharacterDetails characterDetails)
         {
             this.characterDetails = characterDetails;
+        }
+    }
+
+    public class CritEvent : GameEvent
+    {
+        public CritEvent()
+        {
+        }
+    }
+
+    public class OneMoreEvent : GameEvent
+    {
+        public OneMoreEvent()
+        {
+        }
+    }
+
+    public class IsShowingTextEvent : GameEvent
+    {
+        public Action<bool> callback;
+
+        public IsShowingTextEvent(Action<bool> callback)
+        {
+            this.callback = callback;
         }
     }
 

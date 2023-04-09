@@ -12,7 +12,7 @@ public class AITurn : BaseState
     private List<CharacterDetails> targetingCharacter;
     private CharacterDetails targetCharacter;
 
-    private float waitTimer = 3;
+    private float waitTimer = 15;
     private bool attacked = false;
     private bool isCrit = false;
 
@@ -34,14 +34,22 @@ public class AITurn : BaseState
         waitTimer -= deltaTime;
         if (waitTimer <= 0)
         {
-            if (isCrit)
+            EventManager.Trigger(new IsShowingTextEvent(showing =>
             {
-                combatStateMachine.SetState(new PlayerTurn(combatStateMachine, characterDetails));
-            }
-            else
-            {
-                GoToNextTurn();
-            }
+                if (showing)
+                {
+                    if (isCrit)
+                    {
+                        EventManager.Trigger(new OneMoreEvent());
+                        combatStateMachine.SetState(new AITurn(combatStateMachine, characterDetails));
+                    }
+                    else
+                    {
+                        GoToNextTurn();
+                    }
+                }
+
+            }));
         }
         else if (waitTimer <= 2 && !attacked)
         {

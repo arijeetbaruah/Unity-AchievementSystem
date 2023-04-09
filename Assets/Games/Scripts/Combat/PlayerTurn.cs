@@ -128,6 +128,7 @@ public class PlayerTurn : BaseState
             {
                 if (hasCrit)
                 {
+                    EventManager.Trigger(new OneMoreEvent());
                     combatStateMachine.SetState(new PlayerTurn(combatStateMachine, characterDetails));
                 }
                 else
