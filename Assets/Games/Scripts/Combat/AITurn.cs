@@ -5,14 +5,13 @@ using Game.StateMachines;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Diagnostics;
 
 public class AITurn : BaseState
 {
     private List<CharacterDetails> targetingCharacter;
     private CharacterDetails targetCharacter;
 
-    private float waitTimer = 15;
+    private float waitTimer = 5;
     private bool attacked = false;
     private bool isCrit = false;
 
@@ -36,7 +35,7 @@ public class AITurn : BaseState
         {
             EventManager.Trigger(new IsShowingTextEvent(showing =>
             {
-                if (showing)
+                if (!showing)
                 {
                     if (isCrit)
                     {

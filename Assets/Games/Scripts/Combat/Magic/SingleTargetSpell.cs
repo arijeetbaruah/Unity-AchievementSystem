@@ -1,21 +1,23 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Attack", menuName = "RPG/Combat/Attack")]
-public class AttackCommand : ICombatCommand
+[CreateAssetMenu(fileName = "Spell", menuName = "RPG/Magic/Single Target")]
+public class SingleTargetSpell : Spell
 {
+
     [HideInInspector]
     public bool isPlayer;
     public Action OnMoveLeftEvent;
     public Action OnMoveRightEvent;
     public Action OnAttackEvent;
 
-    public override void Execute(CharacterDetails target, CharacterDetails characterDetails, Action<bool> callback)
+    public override void Execute(List<CharacterDetails> target, CharacterDetails characterDetails, Action<bool> callback)
     {
         int attack = characterDetails.Stats.Stats.attack;
-        int dmg = target.Stats.CalculateDamage(attack, baseDmg);
+        int dmg = target[0].Stats.CalculateDamage(attack, baseDmg);
         bool isCrit = IsCrit();
-        bool isWeak = target.weaknesses.Contains(damageType);
+        bool isWeak = target[0].weaknesses.Contains(damageType);
 
         if (isWeak)
         {
@@ -29,7 +31,7 @@ public class AttackCommand : ICombatCommand
 
         characterDetails.OnTriggerHitAnimation = () =>
         {
-            target.TakeDamage(dmg);
+            target[0].TakeDamage(dmg);
             callback?.Invoke(isCrit || isWeak);
         };
         characterDetails.Animator.Play(animationState);

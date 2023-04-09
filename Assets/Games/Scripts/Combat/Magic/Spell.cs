@@ -1,9 +1,13 @@
 using Game.Events;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class ICombatCommand : ScriptableObject
+public abstract class Spell : ScriptableObject
 {
+    public string spellId;
+    public string spellName;
+
     public string animation;
     public int animationState => Animator.StringToHash(animation);
 
@@ -12,7 +16,7 @@ public abstract class ICombatCommand : ScriptableObject
     public float critRate;
     public DamageType damageType;
 
-    public abstract void Execute(CharacterDetails target, CharacterDetails characterDetails, Action<bool> callback);
+    public abstract void Execute(List<CharacterDetails> target, CharacterDetails characterDetails, Action<bool> callback);
     public abstract void Update();
 
     public bool IsCrit()
@@ -27,15 +31,4 @@ public abstract class ICombatCommand : ScriptableObject
 
         return ret;
     }
-}
-
-public enum DamageType
-{
-    Physical,
-    Fire,
-    Ice,
-    Wind,
-    Lightning,
-    Necrotic,
-    Radiant
 }

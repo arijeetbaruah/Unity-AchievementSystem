@@ -29,6 +29,7 @@ public class CharacterDetails : MonoBehaviour
     private HPBar AIHPBar;
 
     public Action OnTriggerHitAnimation;
+    public List<DamageType> weaknesses;
 
     [SerializeField]
     private CinemachineVirtualCamera vcam;
@@ -43,10 +44,10 @@ public class CharacterDetails : MonoBehaviour
     public UnityEvent<string, int, int> OnDeathEvent;
 
     //[ShowInInspector, SerializeReference]
-    public ICombatCommand normalAttack;
+    public AttackCommand normalAttack;
 
     //[ShowInInspector, SerializeReference]
-    public ICombatCommand superAttack;
+    public AttackCommand superAttack;
 
     public Animator Animator => animator;
     public CharacterStats Stats => characterStats;

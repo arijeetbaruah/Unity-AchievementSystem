@@ -74,7 +74,7 @@ public class GameHUDManager : MonoBehaviour
         critSequence.AppendInterval(2);
         critSequence.AppendCallback(() =>
         {
-            critTxt.gameObject.SetActive(false);
+            oneMoreTxt.gameObject.SetActive(false);
         });
         critSequence.AppendInterval(2);
         critSequence.AppendCallback(() =>

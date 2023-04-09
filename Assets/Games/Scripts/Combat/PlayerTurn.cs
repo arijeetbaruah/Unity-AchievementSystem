@@ -19,7 +19,7 @@ public class PlayerTurn : BaseState
     private bool hasCrit = false;
     private float waitingTimer = 1;
 
-    private ICombatCommand selectedAttack = null;
+    private AttackCommand selectedAttack = null;
 
     public PlayerTurn(CombatStateMachine combatStateMachine, CharacterDetails characterDetails) : base(combatStateMachine, characterDetails)
     {
@@ -40,6 +40,11 @@ public class PlayerTurn : BaseState
         selectedAttack = characterDetails.normalAttack;
         ShowTarget();
 
+        selectedAttack.isPlayer = true;
+        selectedAttack.OnMoveLeftEvent = MoveLeft;
+        selectedAttack.OnMoveRightEvent = MoveRight;
+        selectedAttack.OnAttackEvent = OnAttack;
+
         Log.Print("On Player Attack", FilterLog.Game);
     }
 
@@ -53,6 +58,11 @@ public class PlayerTurn : BaseState
         selectedAttack = characterDetails.superAttack;
         ShowTarget();
 
+        selectedAttack.isPlayer = true;
+        selectedAttack.OnMoveLeftEvent = MoveLeft;
+        selectedAttack.OnMoveRightEvent = MoveRight;
+        selectedAttack.OnAttackEvent = OnAttack;
+
         Log.Print("On Player Super Attack", FilterLog.Game);
     }
 
@@ -65,6 +75,45 @@ public class PlayerTurn : BaseState
         }
         targetingCharacter[currentTargetIndex].VirtualCamera.Priority = 100;
         previousTargetIndex = currentTargetIndex;
+    }
+
+    private void MoveRight()
+    {
+        currentTargetIndex++;
+        if (currentTargetIndex >= targetingCharacter.Count)
+        {
+            currentTargetIndex = 0;
+        }
+        ShowTarget();
+    }
+
+    private void MoveLeft()
+    {
+        currentTargetIndex--;
+        if (currentTargetIndex < 0)
+        {
+            currentTargetIndex = targetingCharacter.Count - 1;
+        }
+        ShowTarget();
+    }
+
+    private void OnAttack()
+    {
+        selectedAttack.Execute(targetingCharacter[currentTargetIndex], characterDetails, hasCrit =>
+                {
+                    targeting = false;
+                    attacking = true;
+                    this.hasCrit = hasCrit;
+                    EventManager.Trigger(new ChargeMax(
+                        characterDetails.characterID,
+                        new List<string>() { targetingCharacter[currentTargetIndex].characterID }, 5)
+                    );
+                });
+
+        if (superAttack)
+        {
+            EventManager.Trigger(new ResetPlayerCharge(characterDetails.characterID));
+        }
     }
 
     public override void OnStart()
@@ -86,39 +135,41 @@ public class PlayerTurn : BaseState
     {
         if (targeting)
         {
-            if (Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                currentTargetIndex++;
-                if (currentTargetIndex>=targetingCharacter.Count)
-                {
-                    currentTargetIndex = 0;
-                }
-                ShowTarget();
-            }
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                currentTargetIndex--;
-                if (currentTargetIndex < 0)
-                {
-                    currentTargetIndex = targetingCharacter.Count - 1;
-                }
-                ShowTarget();
-            }
-            if (Input.GetKeyDown(KeyCode.Return))
-            {
-                selectedAttack.Execute(targetingCharacter[currentTargetIndex], characterDetails, hasCrit =>
-                {
-                    targeting = false;
-                    attacking = true;
-                    this.hasCrit = hasCrit;
-                    EventManager.Trigger(new ChargeMax(characterDetails.characterID, new List<string>() { targetingCharacter[currentTargetIndex].characterID }, 5));
-                });
+            selectedAttack?.Update();
 
-                if (superAttack)
-                {
-                    EventManager.Trigger(new ResetPlayerCharge(characterDetails.characterID));
-                }
-            }
+            //if (Input.GetKeyDown(KeyCode.RightArrow))
+            //{
+            //    currentTargetIndex++;
+            //    if (currentTargetIndex>=targetingCharacter.Count)
+            //    {
+            //        currentTargetIndex = 0;
+            //    }
+            //    ShowTarget();
+            //}
+            //if (Input.GetKeyDown(KeyCode.LeftArrow))
+            //{
+            //    currentTargetIndex--;
+            //    if (currentTargetIndex < 0)
+            //    {
+            //        currentTargetIndex = targetingCharacter.Count - 1;
+            //    }
+            //    ShowTarget();
+            //}
+            //if (Input.GetKeyDown(KeyCode.Return))
+            //{
+            //    selectedAttack.Execute(targetingCharacter[currentTargetIndex], characterDetails, hasCrit =>
+            //    {
+            //        targeting = false;
+            //        attacking = true;
+            //        this.hasCrit = hasCrit;
+            //        EventManager.Trigger(new ChargeMax(characterDetails.characterID, new List<string>() { targetingCharacter[currentTargetIndex].characterID }, 5));
+            //    });
+
+                //if (superAttack)
+                //{
+                //    EventManager.Trigger(new ResetPlayerCharge(characterDetails.characterID));
+                //}
+            //}
         }
 
         if (attacking)
