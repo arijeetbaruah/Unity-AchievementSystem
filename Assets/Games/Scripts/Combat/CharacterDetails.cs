@@ -10,11 +10,12 @@ using DG.Tweening;
 using Cinemachine;
 using Game.Events;
 using Game.Service;
+using System;
 
 public class CharacterDetails : MonoBehaviour
 {
     private readonly int TakeHitAnimationHash = Animator.StringToHash("TakeDamage");
-    private readonly int DeathAnimationHash = Animator.StringToHash("TakeDamage");
+    private readonly int DeathAnimationHash = Animator.StringToHash("Die");
 
     public string characterID;
 
@@ -26,6 +27,8 @@ public class CharacterDetails : MonoBehaviour
     private Animator animator;
     [SerializeField]
     private HPBar AIHPBar;
+
+    public Action OnTriggerHitAnimation;
 
     [SerializeField]
     private CinemachineVirtualCamera vcam;
@@ -39,12 +42,13 @@ public class CharacterDetails : MonoBehaviour
     public UnityEvent<string, int, int> OnDamageEvent;
     public UnityEvent<string, int, int> OnDeathEvent;
 
-    [ShowInInspector, SerializeReference]
+    //[ShowInInspector, SerializeReference]
     public ICombatCommand normalAttack;
 
-    [ShowInInspector, SerializeReference]
+    //[ShowInInspector, SerializeReference]
     public ICombatCommand superAttack;
 
+    public Animator Animator => animator;
     public CharacterStats Stats => characterStats;
     public GameplayCanvas GameplayCanvas => gameplayCanvas;
     public CinemachineVirtualCamera VirtualCamera => vcam;
@@ -90,6 +94,12 @@ public class CharacterDetails : MonoBehaviour
     {
         ServiceRegistry.Get<EventManager>().RemoveListener<ChargeMax>(ChargeMax);
         ServiceRegistry.Get<EventManager>().RemoveListener<ResetPlayerCharge>(ResetPlayerCharge);
+    }
+
+    public void TriggerHitAnimation()
+    {
+        OnTriggerHitAnimation?.Invoke();
+        OnTriggerHitAnimation = null;
     }
 
     public void ResetPlayerCharge(ResetPlayerCharge resetPlayerCharge)

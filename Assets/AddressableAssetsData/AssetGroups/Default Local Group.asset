@@ -41,6 +41,16 @@ MonoBehaviour:
     m_SerializedLabels:
     - default
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cbe16442eebb0604d9b377d34465d97e
+    m_Address: Assets/Games/Combat/Normal Attack.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ab25132064dd1d043933ef2d3fd8cf9e
+    m_Address: Assets/Games/Combat/Super Attack.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: e423651b042674d44958f0efdfb93e2f, type: 2}
   m_SchemaSet:

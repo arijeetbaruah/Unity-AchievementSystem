@@ -1106,17 +1106,8 @@ MonoBehaviour:
   OnDeathEvent:
     m_PersistentCalls:
       m_Calls: []
-  normalAttack:
-    rid: 1247037559203430400
-  superAttack:
-    rid: 1247037714947899392
-  references:
-    version: 2
-    RefIds:
-    - rid: 1247037559203430400
-      type: {class: AttackCommand, ns: , asm: Assembly-CSharp}
-    - rid: 1247037714947899392
-      type: {class: SuperAttackCommand, ns: , asm: Assembly-CSharp}
+  normalAttack: {fileID: 11400000, guid: cbe16442eebb0604d9b377d34465d97e, type: 2}
+  superAttack: {fileID: 11400000, guid: ab25132064dd1d043933ef2d3fd8cf9e, type: 2}
 --- !u!4 &7942529331882934175 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4468913360964282, guid: 1543549dcdf638d488bd40cb68dd9b8e,

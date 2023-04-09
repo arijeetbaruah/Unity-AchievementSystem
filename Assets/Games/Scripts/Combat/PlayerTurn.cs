@@ -5,6 +5,7 @@ using Game.StateMachines;
 using Game.Service;
 using Game.Events;
 using Game.Logger;
+using System;
 
 public class PlayerTurn : BaseState
 {
@@ -15,12 +16,14 @@ public class PlayerTurn : BaseState
     private bool targeting = false;
     private bool superAttack = false;
     private bool attacking = false;
+    private bool hasCrit = false;
     private float waitingTimer = 1;
 
     private ICombatCommand selectedAttack = null;
 
     public PlayerTurn(CombatStateMachine combatStateMachine, CharacterDetails characterDetails) : base(combatStateMachine, characterDetails)
     {
+        
     }
 
     public void OnCharacterDeath(OnCharacterDeath @event)
@@ -103,18 +106,18 @@ public class PlayerTurn : BaseState
             }
             if (Input.GetKeyDown(KeyCode.Return))
             {
-                selectedAttack.Execute(targetingCharacter[currentTargetIndex], characterDetails.Stats, () =>
+                selectedAttack.Execute(targetingCharacter[currentTargetIndex], characterDetails, hasCrit =>
                 {
                     targeting = false;
                     attacking = true;
+                    this.hasCrit = hasCrit;
+                    EventManager.Trigger(new ChargeMax(characterDetails.characterID, new List<string>() { targetingCharacter[currentTargetIndex].characterID }, 5));
                 });
 
                 if (superAttack)
                 {
                     EventManager.Trigger(new ResetPlayerCharge(characterDetails.characterID));
                 }
-
-                EventManager.Trigger(new ChargeMax(characterDetails.characterID, new List<string>() { targetingCharacter[currentTargetIndex].characterID }, 5));
             }
         }
 
@@ -123,7 +126,14 @@ public class PlayerTurn : BaseState
             waitingTimer -= deltaTime;
             if (waitingTimer < 0)
             {
-                GoToNextTurn();
+                if (hasCrit)
+                {
+                    combatStateMachine.SetState(new PlayerTurn(combatStateMachine, characterDetails));
+                }
+                else
+                {
+                    GoToNextTurn();
+                }
             }
         }
 
@@ -132,6 +142,7 @@ public class PlayerTurn : BaseState
     public override void OnEnd()
     {
         characterDetails.VirtualCamera.Priority = 50;
+        
         eventManager.RemoveListener<AttackButtonClickEvent>(OnAttack);
         eventManager.RemoveListener<OnCharacterDeath>(OnCharacterDeath);
     }

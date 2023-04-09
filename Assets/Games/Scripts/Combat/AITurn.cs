@@ -14,6 +14,7 @@ public class AITurn : BaseState
 
     private float waitTimer = 3;
     private bool attacked = false;
+    private bool isCrit = false;
 
     public AITurn(CombatStateMachine combatStateMachine, CharacterDetails characterDetails) : base(combatStateMachine, characterDetails)
     {
@@ -33,7 +34,14 @@ public class AITurn : BaseState
         waitTimer -= deltaTime;
         if (waitTimer <= 0)
         {
-            GoToNextTurn();
+            if (isCrit)
+            {
+                combatStateMachine.SetState(new PlayerTurn(combatStateMachine, characterDetails));
+            }
+            else
+            {
+                GoToNextTurn();
+            }
         }
         else if (waitTimer <= 2 && !attacked)
         {
@@ -41,12 +49,12 @@ public class AITurn : BaseState
             characterDetails.VirtualCamera.Priority = 50;
             targetCharacter.VirtualCamera.Priority = 100;
 
-            int attack = characterDetails.Stats.Stats.attack;
-            int dmg = targetCharacter.Stats.CalculateDamage(attack, 5);
-
-            EventManager.Trigger(new ChargeMax(characterDetails.characterID, new List<string>() { targetCharacter.characterID }, 2));
-
-            targetCharacter.TakeDamage(dmg);
+            
+            characterDetails.normalAttack.Execute(targetCharacter, characterDetails, isCrit =>
+            {
+                this.isCrit = isCrit;
+                EventManager.Trigger(new ChargeMax(characterDetails.characterID, new List<string>() { targetCharacter.characterID }, 2));
+            });
         }
     }
 
