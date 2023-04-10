@@ -1465,6 +1465,7 @@ MonoBehaviour:
   gameplayCanvas: {fileID: 0}
   animator: {fileID: 8027015826923647433}
   AIHPBar: {fileID: 7758112696516935067}
+  weaknesses: 0000000001000000
   vcam: {fileID: 791161340}
   currentHP: 300
   currentMana: 0
