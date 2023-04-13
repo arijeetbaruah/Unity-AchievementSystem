@@ -3,7 +3,6 @@ using UnityEngine.UI;
 
 using DG.Tweening;
 using Game.Events;
-using Unity.VisualScripting;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 
@@ -17,12 +16,16 @@ public class GameplayCanvas : MonoBehaviour
     private Button itemButton;
     [SerializeField]
     private Button superButton;
+
+    [SerializeField]
+    private RaidalMenu raidalMenu;
+
     [SerializeField]
     private Transform startPoint;
     [SerializeField]
     private float animationSpeed = 1;
 
-    private System.Collections.Generic.Dictionary<string, Vector3> initPosition = new System.Collections.Generic.Dictionary<string, Vector3>();
+    private Dictionary<string, Vector3> initPosition = new Dictionary<string, Vector3>();
 
     private List<Button> buttons => new List<Button>()
     {
@@ -60,7 +63,7 @@ public class GameplayCanvas : MonoBehaviour
             {
                 initPosition.Add(button.name, button.transform.position);
             }
-            button.transform.position = startPoint.position;
+            //button.transform.position = startPoint.position;
         }
     }
 
@@ -70,18 +73,21 @@ public class GameplayCanvas : MonoBehaviour
 
         gameObject.SetActive(true);
         EventSystem.current.SetSelectedGameObject(null);
-        foreach(var button in buttons)
-        {
-            Open(button);
-        }
+        raidalMenu.Open();
+
+        //foreach(var button in buttons)
+        //{
+        //    Open(button);
+        //}
     }
 
     public void CloseAll()
     {
-        foreach (var button in buttons)
-        {
-            Close(button);
-        }
+        raidalMenu.Close();
+        //foreach (var button in buttons)
+        //{
+        //    Close(button);
+        //}
     }
 
     private void Open(Button button)
