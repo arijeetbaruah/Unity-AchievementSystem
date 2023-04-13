@@ -11,6 +11,8 @@ using Cinemachine;
 using Game.Events;
 using Game.Service;
 using System;
+using System.Linq;
+using Sirenix.Utilities;
 
 public class CharacterDetails : MonoBehaviour
 {
@@ -24,12 +26,17 @@ public class CharacterDetails : MonoBehaviour
     [SerializeField]
     private GameplayCanvas gameplayCanvas;
     [SerializeField]
+    private GameplayMagicMenu gameplayMagicMenu;
+    [SerializeField]
     private Animator animator;
     [SerializeField]
     private HPBar AIHPBar;
 
     public Action OnTriggerHitAnimation;
     public List<DamageType> weaknesses;
+
+    [ValueDropdown("GetSpells", IsUniqueList = true)]
+    public List<Spell> knownSpells;
 
     [SerializeField]
     private CinemachineVirtualCamera vcam;
@@ -52,6 +59,7 @@ public class CharacterDetails : MonoBehaviour
     public Animator Animator => animator;
     public CharacterStats Stats => characterStats;
     public GameplayCanvas GameplayCanvas => gameplayCanvas;
+    public GameplayMagicMenu GameplayMagicCanvas => gameplayMagicMenu;
     public CinemachineVirtualCamera VirtualCamera => vcam;
 
     private IEnumerator Start()
@@ -118,7 +126,10 @@ public class CharacterDetails : MonoBehaviour
         {
             currentMax = Mathf.Min(currentMax + chargeMax.amount, Stats.Stats.maxCharge);
 
-            gameplayCanvas.SuperButton.interactable = currentMax == Stats.Stats.maxCharge;
+            if (gameplayCanvas && gameplayCanvas.SuperButton)
+            {
+                gameplayCanvas.SuperButton.interactable = currentMax == Stats.Stats.maxCharge;
+            }
 
             EventManager.Trigger(new PlayerUpdateCharge(characterID, currentMax));
         }
@@ -145,6 +156,19 @@ public class CharacterDetails : MonoBehaviour
         {
             OnDamageEvent?.Invoke(characterID, dmg, currentHP);
             animator.Play(TakeHitAnimationHash);
+        }
+    }
+
+    private static IEnumerable GetSpells {
+        get
+        {
+            ValueDropdownList<Spell> list = new ValueDropdownList<Spell>();
+            SpellRegistry.Instance.Spells.ForEach(pair =>
+            {
+                list.Add(pair.Key, pair.Value);
+            });
+
+            return list;
         }
     }
 }

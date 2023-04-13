@@ -7,6 +7,7 @@ public abstract class Spell : ScriptableObject
 {
     public string spellId;
     public string spellName;
+    public int spellCost;
 
     public string animation;
     public int animationState => Animator.StringToHash(animation);

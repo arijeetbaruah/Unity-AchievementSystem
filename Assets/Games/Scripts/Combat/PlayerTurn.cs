@@ -20,6 +20,7 @@ public class PlayerTurn : BaseState
     private float waitingTimer = 1;
 
     private AttackCommand selectedAttack = null;
+    private Spell selectedSpell = null;
 
     public PlayerTurn(CombatStateMachine combatStateMachine, CharacterDetails characterDetails) : base(combatStateMachine, characterDetails)
     {
@@ -46,6 +47,61 @@ public class PlayerTurn : BaseState
         selectedAttack.OnAttackEvent = OnAttack;
 
         Log.Print("On Player Attack", FilterLog.Game);
+    }
+
+    public void OnMagicOpen(MagicButtonClickEvent @event)
+    {
+        characterDetails.GameplayMagicCanvas.gameObject.SetActive(true);
+        characterDetails.GameplayCanvas.CloseAll();
+
+        characterDetails.knownSpells.ForEach(spell =>
+        {
+            characterDetails.GameplayMagicCanvas.SpawnBtn(spell, CastSpell);
+        });
+    }
+
+    public void CastSpell(Spell spell)
+    {
+        Log.Print($"Spell is casted: {spell.spellName}");
+        characterDetails.GameplayCanvas.CloseAll();
+        characterDetails.GameplayMagicCanvas.gameObject.SetActive(false);
+
+        if (spell is SingleTargetSpell)
+        {
+            targetingCharacter = new List<CharacterDetails>(combatStateMachine.activeAICharacter);
+            currentTargetIndex = 0;
+            targeting = true;
+            selectedSpell = spell;
+            ShowTarget();
+
+            SingleTargetSpell stspell = selectedSpell as SingleTargetSpell;
+
+            stspell.isPlayer = true;
+            stspell.OnMoveLeftEvent = MoveLeft;
+            stspell.OnMoveRightEvent = MoveRight;
+
+            stspell.OnAttackEvent += () =>
+            {
+                attacking = true;
+                selectedSpell.Execute(new List<CharacterDetails>()
+                {
+                    targetingCharacter[currentTargetIndex],
+                }, 
+                characterDetails,
+                hasOneMore =>
+                {
+                    hasCrit = hasOneMore;
+                });
+            };
+        }
+        else
+        {
+            attacking = true;
+            spell.Execute(combatStateMachine.activeAICharacter, characterDetails, hasOneMore =>
+            {
+                hasCrit = hasOneMore;
+            });
+        }
     }
 
     public void OnSuperAttack(SuperAttackButtonClickEvent @event)
@@ -127,6 +183,7 @@ public class PlayerTurn : BaseState
         characterDetails.GameplayCanvas.SuperButton.interactable = characterDetails.currentMax == characterDetails.Stats.Stats.maxCharge;
 
         eventManager.AddListener<AttackButtonClickEvent>(OnAttack);
+        eventManager.AddListener<MagicButtonClickEvent>(OnMagicOpen);
         eventManager.AddListener<SuperAttackButtonClickEvent>(OnSuperAttack);
         eventManager.AddListener<OnCharacterDeath>(OnCharacterDeath);
     }
@@ -136,40 +193,7 @@ public class PlayerTurn : BaseState
         if (targeting)
         {
             selectedAttack?.Update();
-
-            //if (Input.GetKeyDown(KeyCode.RightArrow))
-            //{
-            //    currentTargetIndex++;
-            //    if (currentTargetIndex>=targetingCharacter.Count)
-            //    {
-            //        currentTargetIndex = 0;
-            //    }
-            //    ShowTarget();
-            //}
-            //if (Input.GetKeyDown(KeyCode.LeftArrow))
-            //{
-            //    currentTargetIndex--;
-            //    if (currentTargetIndex < 0)
-            //    {
-            //        currentTargetIndex = targetingCharacter.Count - 1;
-            //    }
-            //    ShowTarget();
-            //}
-            //if (Input.GetKeyDown(KeyCode.Return))
-            //{
-            //    selectedAttack.Execute(targetingCharacter[currentTargetIndex], characterDetails, hasCrit =>
-            //    {
-            //        targeting = false;
-            //        attacking = true;
-            //        this.hasCrit = hasCrit;
-            //        EventManager.Trigger(new ChargeMax(characterDetails.characterID, new List<string>() { targetingCharacter[currentTargetIndex].characterID }, 5));
-            //    });
-
-                //if (superAttack)
-                //{
-                //    EventManager.Trigger(new ResetPlayerCharge(characterDetails.characterID));
-                //}
-            //}
+            selectedSpell?.Update();
         }
 
         if (attacking)
@@ -196,6 +220,7 @@ public class PlayerTurn : BaseState
         characterDetails.VirtualCamera.Priority = 50;
         
         eventManager.RemoveListener<AttackButtonClickEvent>(OnAttack);
+        eventManager.RemoveListener<MagicButtonClickEvent>(OnMagicOpen);
         eventManager.RemoveListener<OnCharacterDeath>(OnCharacterDeath);
     }
 }
