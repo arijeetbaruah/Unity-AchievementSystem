@@ -29,14 +29,16 @@ public class CharacterDetails : MonoBehaviour
     private GameplayMagicMenu gameplayMagicMenu;
     [SerializeField]
     private Animator animator;
-    [SerializeField]
-    private HPBar AIHPBar;
 
     public Action OnTriggerHitAnimation;
     public List<DamageType> weaknesses;
 
     [ValueDropdown("GetSpells", IsUniqueList = true)]
     public List<Spell> knownSpells;
+
+    [SerializeField]
+    private List<CombatStatus> statusEffect = new List<CombatStatus>();
+    public List<CombatStatus> StatusEffect  => statusEffect;
 
     [SerializeField]
     private CinemachineVirtualCamera vcam;
@@ -73,10 +75,6 @@ public class CharacterDetails : MonoBehaviour
         if (isPlayer)
         {
             EventManager.Trigger(new CreatePlayerHUD(this));
-        }
-        else
-        {
-            AIHPBar?.SetHP(currentHP, Stats.Stats.maxHP);
         }
     }
 
@@ -138,13 +136,14 @@ public class CharacterDetails : MonoBehaviour
     public void UseMana(int amount)
     {
         currentMana = Mathf.Max(0, currentMana - amount);
+
+        EventManager.Trigger(new PlayerUpdateMana(characterID, currentMana));
     }
 
     public void TakeDamage(int dmg)
     {
         currentHP = Mathf.Max(0, currentHP - dmg);
         EventManager.Trigger<PlayerUpdateHP>(new PlayerUpdateHP(characterID, currentHP));
-        AIHPBar?.SetHP(currentHP, Stats.Stats.maxHP);
 
         if (currentHP == 0)
         {
@@ -157,6 +156,17 @@ public class CharacterDetails : MonoBehaviour
             OnDamageEvent?.Invoke(characterID, dmg, currentHP);
             animator.Play(TakeHitAnimationHash);
         }
+    }
+
+    public void AddStatusEffect(CombatStatus combatStatus)
+    {
+        statusEffect.Add(combatStatus);
+        EventManager.Trigger(new UpdateStatusEffect(characterID));
+    }
+
+    public void RemoveStatusEffect(CombatStatus combatStatus)
+    {
+        statusEffect.Remove(combatStatus);
     }
 
     private static IEnumerable GetSpells {
@@ -178,5 +188,15 @@ public class OnCharacterDeath : GameEvent
     public OnCharacterDeath()
     {
 
+    }
+}
+
+public class UpdateStatusEffect : GameEvent
+{
+    public string characterID;
+
+    public UpdateStatusEffect(string characterID)
+    {
+        this.characterID = characterID;
     }
 }

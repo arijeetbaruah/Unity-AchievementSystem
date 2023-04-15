@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spellId: fireball
   spellName: Fireball
+  spellCost: 10
   animation: Attack
   baseDmg: 10
   critRate: 25

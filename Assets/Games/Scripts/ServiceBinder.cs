@@ -57,6 +57,7 @@ public class ServiceBinder : MonoBehaviour
     {
         ServiceRegistry.Bind(new AuthService());
         ServiceRegistry.Bind(new EventManager());
+        ServiceRegistry.Bind(new PoolService());
         ServiceRegistry.Bind(new LoadingService());
         ServiceRegistry.Bind(new AchievementSystem());
         ServiceRegistry.Bind(new CharacterSpawnerService());
@@ -66,6 +67,7 @@ public class ServiceBinder : MonoBehaviour
     {
         ServiceRegistry.UnBind<AuthService>();
         ServiceRegistry.UnBind<EventManager>();
+        ServiceRegistry.UnBind<PoolService>();
         ServiceRegistry.UnBind<LoadingService>();
         ServiceRegistry.UnBind<AchievementSystem>();
         ServiceRegistry.UnBind<CharacterSpawnerService>();

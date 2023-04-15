@@ -36,6 +36,7 @@ public enum DamageType
     Ice,
     Wind,
     Lightning,
+    Psychic,
     Necrotic,
     Radiant
 }

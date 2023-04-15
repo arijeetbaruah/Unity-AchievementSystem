@@ -3,8 +3,11 @@ using Game.Events;
 using Game.Service;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
+using Unity.IO.Archive;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
 
 public class PlayerHPHUD : MonoBehaviour
@@ -29,6 +32,12 @@ public class PlayerHPHUD : MonoBehaviour
     private Color lowHPColor;
     [SerializeField]
     private Color normalHPColor;
+    [SerializeField]
+    private AssetReference statusIcon;
+    [SerializeField]
+    private Transform statusContent;
+
+    private Dictionary<CombatStatus, GameObject> activeStatus;
 
     private void OnEnable()
     {
@@ -36,6 +45,7 @@ public class PlayerHPHUD : MonoBehaviour
         ServiceRegistry.Get<EventManager>().AddListener<PlayerUpdateMana>(UpdatePlayerMana);
         ServiceRegistry.Get<EventManager>().AddListener<PlayerUpdateCharge>(UpdatePlayerCharge);
         ServiceRegistry.Get<EventManager>().AddListener<ResetPlayerCharge>(ResetPlayerCharge);
+        ServiceRegistry.Get<EventManager>().AddListener<UpdateStatusEffect>(UpdateStatusEffect);
     }
 
     public void SetCharacterStats(CharacterDetails characterDetails)
@@ -47,6 +57,48 @@ public class PlayerHPHUD : MonoBehaviour
         hpBar.SetHP(characterDetails.currentHP, characterStats.Stats.maxHP);
         manaBar.SetHP(characterDetails.currentMana, characterStats.Stats.maxMana);
         maxBar.SetHP(characterDetails.currentMax, characterStats.Stats.maxCharge);
+    }
+
+    public void UpdateStatusEffect(UpdateStatusEffect statusEffect)
+    {
+        if (statusEffect.characterID == characterDetails.characterID)
+        {
+            UpdateStatusIcon();
+        }
+    }
+
+    public void UpdateStatusIcon()
+    {
+        var dic = StatusIconSO.Instance.statusIcons.ToDictionary(s => s.status, s => s.texture);
+
+        CombatStatus[] statues = (CombatStatus[]) System.Enum.GetValues(typeof(CombatStatus));
+
+        foreach (CombatStatus statue in statues)
+        {
+            if (characterDetails.StatusEffect.Contains(statue))
+            {
+                if (dic.TryGetValue(statue, out var icon))
+                {
+                    if (activeStatus.TryGetValue(statue, out GameObject iconGO))
+                    {
+                        iconGO.SetActive(true);
+                    }
+                    else
+                    {
+                        statusIcon.InstantiateAsync(statusContent).Completed += handler2 =>
+                        {
+                            Image img = handler2.Result.GetComponentInChildren<Image>();
+                            activeStatus.Add(statue, handler2.Result);
+                            img.sprite = icon;
+                        };
+                    }
+                }
+            }
+            else if (activeStatus.TryGetValue(statue, out GameObject icon))
+            { 
+                icon.gameObject.SetActive(false);
+            }
+        }
     }
 
     public void ResetPlayerCharge(ResetPlayerCharge resetPlayerCharge)

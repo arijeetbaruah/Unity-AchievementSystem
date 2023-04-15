@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Spell", menuName = "RPG/Magic/Single Target")]
-public class SingleTargetSpell : Spell, SingleTarget
+[CreateAssetMenu(fileName = "Spell", menuName = "RPG/Magic/Single Status Target")]
+public class SingleStatusSpell : Spell, SingleTarget
 {
+    public CombatStatus status;
+    public float successRate;
 
     [HideInInspector]
     public bool isPlayer;
@@ -12,7 +14,8 @@ public class SingleTargetSpell : Spell, SingleTarget
     public Action onMoveRightEvent;
     public Action onAttackEvent;
 
-    public bool IsPlayer {
+    public bool IsPlayer
+    {
         get => isPlayer;
         set => isPlayer = value;
     }
@@ -37,27 +40,12 @@ public class SingleTargetSpell : Spell, SingleTarget
 
     public override void Execute(List<CharacterDetails> target, CharacterDetails characterDetails, Action<bool> callback)
     {
-        int attack = characterDetails.Stats.Stats.attack;
-        int dmg = target[0].Stats.CalculateDamage(attack, baseDmg);
-        bool isCrit = IsCrit();
-        bool isWeak = target[0].weaknesses.Contains(damageType);
-
-        if (isWeak)
+        float percent = UnityEngine.Random.Range(0, 100);
+        if (percent < successRate)
         {
-            dmg *= 2;
+            target[0].AddStatusEffect(status);
         }
-
-        if (isCrit)
-        {
-            dmg *= 2;
-        }
-
-        characterDetails.OnTriggerHitAnimation = () =>
-        {
-            target[0].TakeDamage(dmg);
-            callback?.Invoke(target[0].StatusEffect.Contains(CombatStatus.Down) && (isCrit || isWeak));
-        };
-        characterDetails.Animator.Play(animationState);
+        callback?.Invoke(false);
     }
 
     public override void Update()
@@ -85,12 +73,4 @@ public class SingleTargetSpell : Spell, SingleTarget
             OnAttackEvent?.Invoke();
         }
     }
-}
-
-public interface SingleTarget
-{
-    bool IsPlayer { get; set; }
-    Action OnMoveLeftEvent { get; set; }
-    Action OnMoveRightEvent { get; set; }
-    Action OnAttackEvent { get; set; }
 }

@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f210daa411fabc445a3bd7a118d51fce, type: 3}
+  m_Name: Status Icon SO
+  m_EditorClassIdentifier: 
+  statusIcons:
+  - status: 2
+    texture: {fileID: 21300000, guid: 26b13643256ec7344b9f19e3d41af988, type: 3}
+  - status: 1
+    texture: {fileID: 21300000, guid: 71160351fa1b44444a76fb4c4470be1e, type: 3}
+  - status: 3
+    texture: {fileID: 21300000, guid: ec89c92c65df35f4eae594a0c6b907fc, type: 3}
+  - status: 4
+    texture: {fileID: 21300000, guid: 285759c5c63de4b478da5aeba1ce47ed, type: 3}
+  - status: 7
+    texture: {fileID: 21300000, guid: 578ba33b22f7c8a4a8b7f4ee4c0442de, type: 3}
+  - status: 6
+    texture: {fileID: 21300000, guid: f008857e434b98b4eaabda1fd6af3059, type: 3}
+  technicalCombo:
+  - key: 2
+    value: 5
+  - key: 3
+    value: 1
+  - key: 3
+    value: 4
+  - key: 6
+    value: 5

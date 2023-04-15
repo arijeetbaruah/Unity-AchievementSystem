@@ -9,14 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43575c55ea95a874a81c83bb9852af23, type: 3}
-  m_Name: FireBolt
+  m_Script: {fileID: 11500000, guid: e7d077ec4f5fdf242979b51f16f446a7, type: 3}
+  m_Name: venenum
   m_EditorClassIdentifier: 
-  spellId: firebolt
-  spellName: FireBolt
+  spellId: venenum
+  spellName: Venenum
   spellCost: 5
-  animation: Attack
-  baseDmg: 5
-  critRate: 20
-  damageType: 1
+  animation: 
+  baseDmg: 0
+  critRate: 0
+  damageType: 0
+  status: 2
+  successRate: 100
   isPlayer: 0

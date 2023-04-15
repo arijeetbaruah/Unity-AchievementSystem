@@ -1,12 +1,11 @@
+using Game.Service;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GameplayMagicMenu : MonoBehaviour
 {
-    [SerializeField]
-    private AssetReferenceSpellButton spellBtnRef;
+    private SpellBtnObjectPool buttonPool => ServiceRegistry.Get<PoolService>().spellBtnPool;
     [SerializeField]
     private Transform content;
 
@@ -14,18 +13,19 @@ public class GameplayMagicMenu : MonoBehaviour
 
     public void SpawnBtn(Spell spell, Action<Spell> onClick)
     {
-        if (spellDic.ContainsKey(spell.spellId))
+        if (spellDic.TryGetValue(spell.spellId, out SpellBtn btn))
         {
-            spellDic[spell.spellId].SetSpell(spell, onClick);
+            btn.SetSpell(spell, onClick);
+            return;
         }
-        else
+
+        buttonPool.GetInstance(btn =>
         {
-            spellBtnRef.InstantiateAsync(content).Completed += handler =>
-            {
-                SpellBtn spellBtn = handler.Result.GetComponent<SpellBtn>();
-                spellDic.Add(spell.spellId, spellBtn);
-                spellBtn.SetSpell(spell, onClick);
-            };
-        }
+            spellDic.Add(spell.spellId, btn);
+            btn.transform.SetParent(content);
+            btn.GetComponent<RectTransform>().position = Vector3.zero;
+            btn.GetComponent<RectTransform>().localScale = Vector3.one;
+            btn.SetSpell(spell, onClick);
+        });
     }
 }

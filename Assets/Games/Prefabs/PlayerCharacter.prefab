@@ -1171,11 +1171,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0e4202e290ee1e44bfdcfea1490526c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spellBtnRef:
-    m_AssetGUID: 2ac263d957ee7b349a6f9deabcbded6e
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
   content: {fileID: 6344512567831815569}
 --- !u!1 &2715161338545242929
 GameObject:
@@ -2127,7 +2122,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stats:
     maxHP: 300
-    maxMana: 300
+    maxMana: 100
     attack: 15
     defense: 12
     magicAttack: 17
@@ -2152,10 +2147,14 @@ MonoBehaviour:
   gameplayMagicMenu: {fileID: 3063265479190930513}
   animator: {fileID: 8027015826923647433}
   AIHPBar: {fileID: 0}
+  playerNameTxt: {fileID: 0}
   weaknesses: 
   knownSpells:
   - {fileID: 11400000, guid: 7868209757ab2e94389e9d40071a1ccd, type: 2}
   - {fileID: 11400000, guid: 307b8e4a276dd2642a04e331cee6e2b1, type: 2}
+  - {fileID: 11400000, guid: 8db7121470e1f114eb16eb1183d59999, type: 2}
+  - {fileID: 11400000, guid: 7dd43a783f465114d8b41b9997f618bb, type: 2}
+  statusEffect: 0
   vcam: {fileID: 791161340}
   currentHP: 300
   currentMana: 0

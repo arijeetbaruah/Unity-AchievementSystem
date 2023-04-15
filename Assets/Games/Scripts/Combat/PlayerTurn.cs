@@ -66,7 +66,7 @@ public class PlayerTurn : BaseState
         characterDetails.GameplayCanvas.CloseAll();
         characterDetails.GameplayMagicCanvas.gameObject.SetActive(false);
 
-        if (spell is SingleTargetSpell)
+        if (spell is SingleTarget)
         {
             targetingCharacter = new List<CharacterDetails>(combatStateMachine.activeAICharacter);
             currentTargetIndex = 0;
@@ -74,15 +74,16 @@ public class PlayerTurn : BaseState
             selectedSpell = spell;
             ShowTarget();
 
-            SingleTargetSpell stspell = selectedSpell as SingleTargetSpell;
+            SingleTarget stspell = selectedSpell as SingleTarget;
 
-            stspell.isPlayer = true;
+            stspell.IsPlayer = true;
             stspell.OnMoveLeftEvent = MoveLeft;
             stspell.OnMoveRightEvent = MoveRight;
 
-            stspell.OnAttackEvent += () =>
+            stspell.OnAttackEvent = () =>
             {
                 attacking = true;
+                characterDetails.UseMana(spell.spellCost);
                 selectedSpell.Execute(new List<CharacterDetails>()
                 {
                     targetingCharacter[currentTargetIndex],
@@ -97,6 +98,7 @@ public class PlayerTurn : BaseState
         else
         {
             attacking = true;
+            characterDetails.UseMana(spell.spellCost);
             spell.Execute(combatStateMachine.activeAICharacter, characterDetails, hasOneMore =>
             {
                 hasCrit = hasOneMore;
@@ -182,10 +184,55 @@ public class PlayerTurn : BaseState
 
         characterDetails.GameplayCanvas.SuperButton.interactable = characterDetails.currentMax == characterDetails.Stats.Stats.maxCharge;
 
+        StartStatusEffect();
+
         eventManager.AddListener<AttackButtonClickEvent>(OnAttack);
         eventManager.AddListener<MagicButtonClickEvent>(OnMagicOpen);
         eventManager.AddListener<SuperAttackButtonClickEvent>(OnSuperAttack);
         eventManager.AddListener<OnCharacterDeath>(OnCharacterDeath);
+    }
+
+    public void StartStatusEffect()
+    {
+        characterDetails.StatusEffect.ForEach(status =>
+        {
+            StartStatusEffect(status);
+        });
+    }
+
+    public void StartStatusEffect(CombatStatus status)
+    {
+        switch (status)
+        {
+            case CombatStatus.Poisoned:
+            case CombatStatus.Bleeding:
+            case CombatStatus.Burning:
+                characterDetails.TakeDamage(5);
+                break;
+            case CombatStatus.Down:
+                characterDetails.RemoveStatusEffect(status);
+                break;
+            case CombatStatus.Confused:
+                var targets = combatStateMachine.activeOrderedCharacter;
+                int index = UnityEngine.Random.Range(0, targets.Count);
+
+                selectedAttack.Execute(targets[index], characterDetails, hasCrit =>
+                {
+                    targeting = false;
+                    attacking = true;
+                    this.hasCrit = hasCrit;
+                    EventManager.Trigger(new ChargeMax(
+                        characterDetails.characterID,
+                        new List<string>() { targets[index].characterID }, 5)
+                    );
+                });
+                GoToNextTurn();
+
+                break;
+            case CombatStatus.Paralyzed:
+                GoToNextTurn();
+                break;
+        }
     }
 
     public override void OnUpdate(float deltaTime)

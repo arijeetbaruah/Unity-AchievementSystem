@@ -25,7 +25,50 @@ public class AITurn : BaseState
         targetingCharacter = new List<CharacterDetails>(combatStateMachine.activePlayerCharacter);
         targetCharacter = targetingCharacter[Random.Range(0, targetingCharacter.Count - 1)];
 
+        StartStatusEffect();
+
         Log.Print("On AI Attack", FilterLog.Game);
+    }
+
+    public void StartStatusEffect()
+    {
+        characterDetails.StatusEffect.ForEach(status =>
+        {
+            StartStatusEffect(status);
+        });
+    }
+
+    public void StartStatusEffect(CombatStatus status)
+    {
+        switch (status)
+        {
+            case CombatStatus.Poisoned:
+            case CombatStatus.Bleeding:
+            case CombatStatus.Burning:
+                characterDetails.TakeDamage(5);
+                break;
+            case CombatStatus.Down:
+                characterDetails.RemoveStatusEffect(status);
+                break;
+            case CombatStatus.Confused:
+                var targets = combatStateMachine.activeOrderedCharacter;
+                int index = UnityEngine.Random.Range(0, targets.Count);
+
+                characterDetails.normalAttack.Execute(targets[index], characterDetails, hasCrit =>
+                {
+                    isCrit = hasCrit;
+                    EventManager.Trigger(new ChargeMax(
+                        characterDetails.characterID,
+                        new List<string>() { targets[index].characterID }, 5)
+                    );
+                });
+                GoToNextTurn();
+
+                break;
+            case CombatStatus.Paralyzed:
+                GoToNextTurn();
+                break;
+        }
     }
 
     public override void OnUpdate(float deltaTime)
