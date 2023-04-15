@@ -1,3 +1,4 @@
+using Game.Events;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,6 +22,7 @@ public class MultiTargetStatusSpell : Spell
             if (percent < successRate)
             {
                 target.AddStatusEffect(status);
+                EventManager.Trigger(new ReportStatusEvent(target.characterID, status));
             }
             callback?.Invoke(false);
         }

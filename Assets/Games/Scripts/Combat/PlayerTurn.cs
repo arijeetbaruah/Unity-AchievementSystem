@@ -184,6 +184,12 @@ public class PlayerTurn : BaseState
 
         characterDetails.GameplayCanvas.SuperButton.interactable = characterDetails.currentMax == characterDetails.Stats.Stats.maxCharge;
 
+        if (characterDetails.currentHP == 0)
+        {
+            characterDetails.gameObject.SetActive(false);
+            GoToNextTurn();
+        }
+
         StartStatusEffect();
 
         eventManager.AddListener<AttackButtonClickEvent>(OnAttack);
@@ -192,22 +198,26 @@ public class PlayerTurn : BaseState
         eventManager.AddListener<OnCharacterDeath>(OnCharacterDeath);
     }
 
-    public void StartStatusEffect()
+    public IEnumerator StartStatusEffect()
     {
-        characterDetails.StatusEffect.ForEach(status =>
+        foreach(var status in characterDetails.StatusEffect)
         {
-            StartStatusEffect(status);
-        });
+            yield return StartStatusEffect(status);
+        }
     }
 
-    public void StartStatusEffect(CombatStatus status)
+    public IEnumerator StartStatusEffect(CombatStatus status)
     {
+        const int waitTime = 1;
+        EventManager.Trigger(new ReportStatusEvent(characterDetails.characterID, status));
+
         switch (status)
         {
             case CombatStatus.Poisoned:
             case CombatStatus.Bleeding:
             case CombatStatus.Burning:
                 characterDetails.TakeDamage(5);
+                yield return new WaitForSeconds(waitTime);
                 break;
             case CombatStatus.Down:
                 characterDetails.RemoveStatusEffect(status);
@@ -227,7 +237,6 @@ public class PlayerTurn : BaseState
                     );
                 });
                 GoToNextTurn();
-
                 break;
             case CombatStatus.Paralyzed:
                 GoToNextTurn();

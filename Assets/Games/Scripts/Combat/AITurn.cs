@@ -25,6 +25,12 @@ public class AITurn : BaseState
         targetingCharacter = new List<CharacterDetails>(combatStateMachine.activePlayerCharacter);
         targetCharacter = targetingCharacter[Random.Range(0, targetingCharacter.Count - 1)];
 
+        if (characterDetails.currentHP == 0)
+        {
+            characterDetails.gameObject.SetActive(false);
+            GoToNextTurn();
+        }
+
         StartStatusEffect();
 
         Log.Print("On AI Attack", FilterLog.Game);
@@ -32,14 +38,16 @@ public class AITurn : BaseState
 
     public void StartStatusEffect()
     {
-        characterDetails.StatusEffect.ForEach(status =>
+        foreach (var status in characterDetails.StatusEffect)
         {
             StartStatusEffect(status);
-        });
+        }
     }
 
     public void StartStatusEffect(CombatStatus status)
     {
+        EventManager.Trigger(new ReportStatusEvent(characterDetails.characterID, status));
+
         switch (status)
         {
             case CombatStatus.Poisoned:
@@ -63,7 +71,6 @@ public class AITurn : BaseState
                     );
                 });
                 GoToNextTurn();
-
                 break;
             case CombatStatus.Paralyzed:
                 GoToNextTurn();

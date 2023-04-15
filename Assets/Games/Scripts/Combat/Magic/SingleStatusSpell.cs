@@ -1,3 +1,4 @@
+using Game.Events;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -44,6 +45,7 @@ public class SingleStatusSpell : Spell, SingleTarget
         if (percent < successRate)
         {
             target[0].AddStatusEffect(status);
+            EventManager.Trigger(new ReportStatusEvent(target[0].characterID, status));
         }
         callback?.Invoke(false);
     }
