@@ -37,8 +37,12 @@ public class SingleTargetSpell : Spell, SingleTarget
 
     public override void Execute(List<CharacterDetails> target, CharacterDetails characterDetails, Action<bool> callback)
     {
-        int attack = characterDetails.Stats.Stats.attack;
-        int dmg = target[0].Stats.CalculateDamage(attack, baseDmg);
+        Stats characterStats = characterDetails.Stats.Stats + characterDetails.inventory.GetBonus;
+        Stats targetStats = target[0].Stats.Stats + target[0].inventory.GetBonus;
+
+
+        int attack = characterStats.attack;
+        int dmg = targetStats.CalculateDamage(attack, baseDmg);
         bool isCrit = IsCrit();
         bool isWeak = target[0].weaknesses.Contains(damageType);
 

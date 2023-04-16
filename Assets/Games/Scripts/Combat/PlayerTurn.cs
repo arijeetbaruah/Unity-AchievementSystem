@@ -17,6 +17,7 @@ public class PlayerTurn : BaseState
     private bool superAttack = false;
     private bool attacking = false;
     private bool hasCrit = false;
+    private bool mainMenu = true;
     private float waitingTimer = 1;
 
     private AttackCommand selectedAttack = null;
@@ -34,6 +35,7 @@ public class PlayerTurn : BaseState
 
     public void OnAttack(AttackButtonClickEvent @event)
     {
+        mainMenu = false;
         characterDetails.GameplayCanvas.CloseAll();
         targetingCharacter = new List<CharacterDetails>(combatStateMachine.activeAICharacter);
         currentTargetIndex = 0;
@@ -51,6 +53,7 @@ public class PlayerTurn : BaseState
 
     public void OnMagicOpen(MagicButtonClickEvent @event)
     {
+        mainMenu = false;
         characterDetails.GameplayMagicCanvas.gameObject.SetActive(true);
         characterDetails.GameplayCanvas.CloseAll();
 
@@ -106,8 +109,17 @@ public class PlayerTurn : BaseState
         }
     }
 
+    public void OnItemOpen(ItemButtonClickEvent @event)
+    {
+        mainMenu = false;
+        characterDetails.GameplayCanvas.CloseAll();
+        characterDetails.ItemMenuUI.playerTurn = this;
+        characterDetails.ItemMenuUI.gameObject.SetActive(true);
+    }
+
     public void OnSuperAttack(SuperAttackButtonClickEvent @event)
     {
+        mainMenu = false;
         characterDetails.GameplayCanvas.CloseAll();
         targetingCharacter = new List<CharacterDetails>(combatStateMachine.activeAICharacter);
         currentTargetIndex = 0;
@@ -179,6 +191,7 @@ public class PlayerTurn : BaseState
         characterDetails.VirtualCamera.Priority = 100;
         attacking = false;
         superAttack = false;
+        mainMenu = true;
         targeting = false;
         characterDetails.GameplayCanvas.OpenAll();
 
@@ -194,6 +207,7 @@ public class PlayerTurn : BaseState
 
         eventManager.AddListener<AttackButtonClickEvent>(OnAttack);
         eventManager.AddListener<MagicButtonClickEvent>(OnMagicOpen);
+        eventManager.AddListener<ItemButtonClickEvent>(OnItemOpen);
         eventManager.AddListener<SuperAttackButtonClickEvent>(OnSuperAttack);
         eventManager.AddListener<OnCharacterDeath>(OnCharacterDeath);
     }
@@ -250,6 +264,40 @@ public class PlayerTurn : BaseState
         {
             selectedAttack?.Update();
             selectedSpell?.Update();
+        }
+        
+        if (mainMenu)
+        {
+            if (Input.GetKey(KeyCode.E))
+            {
+                OnAttack(new AttackButtonClickEvent());
+            }
+            if (Input.GetKey(KeyCode.Z) && characterDetails.GameplayCanvas.SuperButton.interactable)
+            {
+                OnSuperAttack(new SuperAttackButtonClickEvent());
+            }
+            if (Input.GetKey(KeyCode.Q))
+            {
+                OnItemOpen(new ItemButtonClickEvent());
+            }
+            if (Input.GetKey(KeyCode.F))
+            {
+                OnMagicOpen(new MagicButtonClickEvent());
+            }
+        }
+        else
+        {
+            if (Input.GetKey(KeyCode.Escape))
+            {
+                characterDetails.GameplayMagicCanvas.gameObject.SetActive(false);
+                characterDetails.GameplayCanvas.OpenAll();
+
+                characterDetails.VirtualCamera.Priority = 100;
+                attacking = false;
+                superAttack = false;
+                mainMenu = true;
+                targeting = false;
+            }
         }
 
         if (attacking)

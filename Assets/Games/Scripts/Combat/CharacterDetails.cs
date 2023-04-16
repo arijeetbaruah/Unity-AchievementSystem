@@ -28,6 +28,8 @@ public class CharacterDetails : MonoBehaviour
     [SerializeField]
     private GameplayMagicMenu gameplayMagicMenu;
     [SerializeField]
+    private ItemMenuUI itemMenuUI;
+    [SerializeField]
     private Animator animator;
 
     public Action OnTriggerHitAnimation;
@@ -58,10 +60,13 @@ public class CharacterDetails : MonoBehaviour
     //[ShowInInspector, SerializeReference]
     public AttackCommand superAttack;
 
+    public CharacterInventory inventory;
+
     public Animator Animator => animator;
     public CharacterStats Stats => characterStats;
     public GameplayCanvas GameplayCanvas => gameplayCanvas;
     public GameplayMagicMenu GameplayMagicCanvas => gameplayMagicMenu;
+    public ItemMenuUI ItemMenuUI => itemMenuUI;
     public CinemachineVirtualCamera VirtualCamera => vcam;
 
     private IEnumerator Start()

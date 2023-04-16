@@ -8,12 +8,16 @@ public class MultiTargetSpell : Spell
 {
     public override void Execute(List<CharacterDetails> targets, CharacterDetails characterDetails, Action<bool> callback)
     {
-        int attack = characterDetails.Stats.Stats.attack;
+        Stats characterStats = characterDetails.Stats.Stats + characterDetails.inventory.GetBonus;
+
+        int attack = characterStats.attack;
         bool oneMore = false;
 
         foreach (var target in targets)
         {
-            int dmg = target.Stats.CalculateDamage(attack, baseDmg);
+            Stats targetStats = target.Stats.Stats + target.inventory.GetBonus;
+
+            int dmg = targetStats.CalculateMagicDamage(attack, baseDmg);
             bool isCrit = IsCrit();
             bool isWeak = target.weaknesses.Contains(damageType);
 

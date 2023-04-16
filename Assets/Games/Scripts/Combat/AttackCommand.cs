@@ -12,8 +12,11 @@ public class AttackCommand : ICombatCommand
 
     public override void Execute(CharacterDetails target, CharacterDetails characterDetails, Action<bool> callback)
     {
-        int attack = characterDetails.Stats.Stats.attack;
-        int dmg = target.Stats.CalculateDamage(attack, baseDmg);
+        Stats characterStats = characterDetails.Stats.Stats + characterDetails.inventory.GetBonus;
+        Stats targetStats = target.Stats.Stats + target.inventory.GetBonus;
+
+        int attack = characterStats.attack;
+        int dmg = targetStats.CalculateDamage(attack, baseDmg);
         bool isCrit = IsCrit();
         bool isWeak = target.weaknesses.Contains(damageType);
 

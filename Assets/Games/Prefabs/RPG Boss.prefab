@@ -1651,6 +1651,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 2061005752}
+    - targetCorrespondingSourceObject: {fileID: 1319517528997712, guid: 1543549dcdf638d488bd40cb68dd9b8e,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -3295383998450335106}
   m_SourcePrefab: {fileID: 100100000, guid: 1543549dcdf638d488bd40cb68dd9b8e, type: 3}
 --- !u!4 &7937569708772031663 stripped
 Transform:
@@ -1718,6 +1722,20 @@ MonoBehaviour:
       m_Calls: []
   normalAttack: {fileID: 11400000, guid: cbe16442eebb0604d9b377d34465d97e, type: 2}
   superAttack: {fileID: 11400000, guid: ab25132064dd1d043933ef2d3fd8cf9e, type: 2}
+  inventory: {fileID: -3295383998450335106}
+--- !u!114 &-3295383998450335106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7940646808475011701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec0a2b93eba9c0447addf949b65559fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weapon: {fileID: 0}
 --- !u!4 &7942529331882934175 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4468913360964282, guid: 1543549dcdf638d488bd40cb68dd9b8e,
