@@ -22,6 +22,100 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 738e71e3288f1a247be9deb37bd243c3
+    m_Address: Assets/Games/Prefabs/DamageText.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e3c25f099c724b346ad9765b685bd1b4
+    m_Address: Assets/Games/Prefabs/GameplayCanvas.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 65049b45ca088e846bd8cadef0d80433
+    m_Address: Assets/Games/Prefabs/PlayerHPHUD.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cbe16442eebb0604d9b377d34465d97e
+    m_Address: Assets/Games/Combat/Normal Attack.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ab25132064dd1d043933ef2d3fd8cf9e
+    m_Address: Assets/Games/Combat/Super Attack.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7868209757ab2e94389e9d40071a1ccd
+    m_Address: Assets/Games/Combat/Spells/FireBolt.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 307b8e4a276dd2642a04e331cee6e2b1
+    m_Address: Assets/Games/Combat/Spells/FireBall.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2ac263d957ee7b349a6f9deabcbded6e
+    m_Address: Assets/Games/Prefabs/Spell Btn.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7dd43a783f465114d8b41b9997f618bb
+    m_Address: Assets/Games/Combat/Spells/morevenenum.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8db7121470e1f114eb16eb1183d59999
+    m_Address: Assets/Games/Combat/Spells/Venenum.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 26b13643256ec7344b9f19e3d41af988
+    m_Address: Assets/Games/Sprites/poison.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 71160351fa1b44444a76fb4c4470be1e
+    m_Address: Assets/Games/Sprites/down-arrow.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ec89c92c65df35f4eae594a0c6b907fc
+    m_Address: Assets/Games/Sprites/bleeding.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 285759c5c63de4b478da5aeba1ce47ed
+    m_Address: Assets/Games/Sprites/fire.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b75f68cfbdab2ad4db90a1685b52460b
+    m_Address: Assets/Games/Sprites/lightning.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 578ba33b22f7c8a4a8b7f4ee4c0442de
+    m_Address: Assets/Games/Sprites/asleep.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 038b27a055eb904418c2aeedeb2ddc35
+    m_Address: Assets/Games/Prefabs/Status.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4f37c4d88f2836f41b204fa197c1c7e7
+    m_Address: Assets/Games/Sprites/confused.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: e423651b042674d44958f0efdfb93e2f, type: 2}
   m_SchemaSet:

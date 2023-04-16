@@ -12,12 +12,14 @@ using UnityEngine.AddressableAssets;
 public class ServiceBinder : MonoBehaviour
 {
     public AssetReferenceGameObject assetRefernce;
+    public AssetReferenceScene nextScene;
 
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
 
         Log.Initialization(new UnityLogger());
+        Log.Print("hi", FilterLog.GameEvent);
 
         ServiceRegistry.Initialize();
         
@@ -26,19 +28,23 @@ public class ServiceBinder : MonoBehaviour
 
     private IEnumerator Start()
     {
+        AuthService authService = ServiceRegistry.Get<AuthService>();
 
         var loadingScreen = assetRefernce.InstantiateAsync();
-        
+
         yield return loadingScreen;
+        yield return authService.Initialize();
 
         GameObject obj = loadingScreen.Result;
         DontDestroyOnLoad (obj);
 
         yield return Addressables.InitializeAsync();
 
+        yield return authService.AsyncLogin();
+
         yield return new WaitForSeconds(3);
 
-        yield return SceneManager.LoadSceneAsync(1);
+        yield return Addressables.LoadSceneAsync(nextScene);
 
         yield return new WaitForSeconds(3);
 
@@ -49,8 +55,21 @@ public class ServiceBinder : MonoBehaviour
 
     private void Bind()
     {
+        ServiceRegistry.Bind(new AuthService());
         ServiceRegistry.Bind(new EventManager());
+        ServiceRegistry.Bind(new PoolService());
         ServiceRegistry.Bind(new LoadingService());
         ServiceRegistry.Bind(new AchievementSystem());
+        ServiceRegistry.Bind(new CharacterSpawnerService());
+    }
+
+    private void UnBind()
+    {
+        ServiceRegistry.UnBind<AuthService>();
+        ServiceRegistry.UnBind<EventManager>();
+        ServiceRegistry.UnBind<PoolService>();
+        ServiceRegistry.UnBind<LoadingService>();
+        ServiceRegistry.UnBind<AchievementSystem>();
+        ServiceRegistry.UnBind<CharacterSpawnerService>();
     }
 }

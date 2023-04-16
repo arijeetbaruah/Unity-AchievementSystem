@@ -9,6 +9,19 @@ public abstract class UnitySerializedDictionary<TKey, TValue> : Dictionary<TKey,
     [SerializeField, HideInInspector]
     private List<TValue> valueData = new List<TValue>();
 
+    public UnitySerializedDictionary()
+    {
+
+    }
+
+    public UnitySerializedDictionary(Dictionary<TKey, TValue> dic)
+    {
+        foreach(var pair in dic)
+        {
+            this.Add(pair.Key, pair.Value);
+        }
+    }
+
     public void OnAfterDeserialize()
     {
         this.Clear();
