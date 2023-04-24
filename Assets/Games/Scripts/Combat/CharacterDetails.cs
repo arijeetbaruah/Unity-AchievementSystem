@@ -83,19 +83,6 @@ public class CharacterDetails : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyUp(KeyCode.Space))
-        {
-            TakeDamage(10);
-        }
-
-        if (Input.GetKeyUp(KeyCode.F))
-        {
-            UseMana(10);
-        }
-    }
-
     private void OnEnable()
     {
         ServiceRegistry.Get<EventManager>().AddListener<ChargeMax>(ChargeMax);

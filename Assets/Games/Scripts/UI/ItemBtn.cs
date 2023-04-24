@@ -17,7 +17,10 @@ public class ItemBtn : MonoBehaviour
 
     private void Start()
     {
-        GetComponent<Button>().onClick.AddListener(() => OnClick?.Invoke(item.ItemID));
+        GetComponent<Button>().onClick.AddListener(() =>
+        {
+            OnClick?.Invoke(item.ItemID);
+        });
     }
 
     public void SetItem(InventoryItemData itemData, bool isEquiped = false)
@@ -25,6 +28,6 @@ public class ItemBtn : MonoBehaviour
         inventoryItemData = itemData;
         item = ItemRegistry.Instance.itemDictionary[itemData.inventoryID];
 
-        txt.SetText($"{item.ItemName} ({inventoryItemData.count})" + (isEquiped ? " E" : ""));
+        txt.SetText($"{item.ItemName}{(inventoryItemData.count > 1 ? $" ({inventoryItemData.count})" : "")}{(isEquiped ? " - E" : "")}");
     }
 }

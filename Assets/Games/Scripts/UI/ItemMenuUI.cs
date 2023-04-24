@@ -1,8 +1,13 @@
+using Game.Events;
+using Game.Logger;
 using Sirenix.OdinInspector;
+using Sirenix.Utilities;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class ItemMenuUI : MonoBehaviour
 {
@@ -11,17 +16,33 @@ public class ItemMenuUI : MonoBehaviour
     [SerializeField]
     private ItemBtn itemBtnPrefab;
     [SerializeField]
+    private Button closeButton;
+    [SerializeField]
     private Transform content;
 
     public List<ItemTabButton> tabButtons;
 
     public PlayerTurn playerTurn;
 
+    public System.Action OnClose;
+
     public Dictionary<ItemCategory, ItemTabButton> categoryTabButtons => tabButtons.ToDictionary(tb => tb.category);
 
     public ItemCategory selectedCategory;
 
     private Dictionary<ItemCategory, List<InventoryItemData>> categoryItems = new Dictionary<ItemCategory, List<InventoryItemData>>();
+
+    private KeyCode[] keyCodes = {
+         KeyCode.Alpha1,
+         KeyCode.Alpha2,
+         KeyCode.Alpha3,
+         KeyCode.Alpha4,
+         KeyCode.Alpha5,
+         KeyCode.Alpha6,
+         KeyCode.Alpha7,
+         KeyCode.Alpha8,
+         KeyCode.Alpha9,
+     };
 
     private void Awake()
     {
@@ -34,11 +55,49 @@ public class ItemMenuUI : MonoBehaviour
     private void OnEnable()
     {
         OnTabChange();
+        closeButton.onClick.AddListener(() =>
+        {
+            gameObject.SetActive(false);
+        });
+    }
+
+    private void OnDisable()
+    {
+        closeButton.onClick.RemoveAllListeners();
+        OnClose?.Invoke();
+    }
+
+    private void Update()
+    {
+        int index = 0;
+        foreach(var key in categoryItems.Keys)
+        {
+            if (Input.GetKey(keyCodes[index]))
+            {
+                ChangeTab(key);
+            }
+            index++;
+        }
+    }
+
+    public void ChangeTab(ItemCategory tab)
+    {
+        selectedCategory = tab;
+        OnTabChange();
     }
 
     private void OnTabChange()
     {
-        tabButtons.ForEach(tb => tb.IsActive = false);
+        Log.Print(selectedCategory, FilterLog.Game);
+
+        tabButtons.ForEach(tb => {
+            tb.GetComponent<Button>().onClick.AddListener(() =>
+            {
+                var category = tb.category;
+                ChangeTab(category);
+            });
+            tb.IsActive = false;
+        });
         categoryTabButtons[selectedCategory].IsActive = true;
 
         foreach(Transform cTransform in content)
@@ -47,6 +106,7 @@ public class ItemMenuUI : MonoBehaviour
         }
 
         List<InventoryItemData> items = categoryItems[selectedCategory];
+        bool isFirst = true;
         items.ForEach(i =>
         {
             var btn = Instantiate(itemBtnPrefab, content);
@@ -66,6 +126,11 @@ public class ItemMenuUI : MonoBehaviour
 
             btn.SetItem(i, isEquiped);
             btn.OnClick = OnItemClick;
+            if (isFirst)
+            {
+                EventSystem.current.SetSelectedGameObject(btn.gameObject);
+                isFirst = false;
+            }
         });
     }
 

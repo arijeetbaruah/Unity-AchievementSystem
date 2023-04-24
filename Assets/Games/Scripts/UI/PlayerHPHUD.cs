@@ -150,7 +150,7 @@ public class PlayerHPHUD : MonoBehaviour
     {
         if (playerUpdateMana.playerID == characterDetails.characterID)
         {
-            manaBar.SetHP(playerUpdateMana.amount, characterDetails.Stats.Stats.maxHP);
+            manaBar.SetHP(playerUpdateMana.amount, characterDetails.Stats.Stats.maxMana);
         }
     }
 }

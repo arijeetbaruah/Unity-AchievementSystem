@@ -55,12 +55,21 @@ public class PlayerTurn : BaseState
     {
         mainMenu = false;
         characterDetails.GameplayMagicCanvas.gameObject.SetActive(true);
+        characterDetails.GameplayMagicCanvas.OnClose += CloseMagic;
         characterDetails.GameplayCanvas.CloseAll();
 
         characterDetails.knownSpells.ForEach(spell =>
         {
             characterDetails.GameplayMagicCanvas.SpawnBtn(spell, CastSpell);
         });
+    }
+
+    public void CloseMagic()
+    {
+        mainMenu = true;
+        characterDetails.GameplayMagicCanvas.OnClose -= CloseMagic;
+        characterDetails.GameplayMagicCanvas.gameObject.SetActive(false);
+        characterDetails.GameplayCanvas.OpenAll();
     }
 
     public void CastSpell(Spell spell)
@@ -113,8 +122,16 @@ public class PlayerTurn : BaseState
     {
         mainMenu = false;
         characterDetails.GameplayCanvas.CloseAll();
+        characterDetails.ItemMenuUI.OnClose += OnItemOpen;
         characterDetails.ItemMenuUI.playerTurn = this;
         characterDetails.ItemMenuUI.gameObject.SetActive(true);
+    }
+
+    private void OnItemOpen()
+    {
+        mainMenu = true;
+        characterDetails.ItemMenuUI.OnClose -= OnItemOpen;
+        characterDetails.GameplayCanvas.OpenAll();
     }
 
     public void OnSuperAttack(SuperAttackButtonClickEvent @event)
@@ -290,6 +307,7 @@ public class PlayerTurn : BaseState
             if (Input.GetKey(KeyCode.Escape))
             {
                 characterDetails.GameplayMagicCanvas.gameObject.SetActive(false);
+                characterDetails.ItemMenuUI.gameObject.SetActive(false);
                 characterDetails.GameplayCanvas.OpenAll();
 
                 characterDetails.VirtualCamera.Priority = 100;
