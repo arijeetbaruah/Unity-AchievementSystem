@@ -150,15 +150,24 @@ public class CharacterDetails : MonoBehaviour
         }
     }
 
-    public void AddStatusEffect(CombatStatus combatStatus)
+    public bool AddStatusEffect(CombatStatus combatStatus)
     {
-        statusEffect.Add(combatStatus);
-        EventManager.Trigger(new UpdateStatusEffect(characterID));
+        if(!statusEffect.Contains(combatStatus))
+        {
+            statusEffect.Add(combatStatus);
+            EventManager.Trigger(new UpdateStatusEffect(characterID));
+            return true;
+        }
+
+        return false;
     }
 
     public void RemoveStatusEffect(CombatStatus combatStatus)
     {
-        statusEffect.Remove(combatStatus);
+        if (statusEffect.Contains(combatStatus))
+        {
+            statusEffect.Remove(combatStatus);
+        }
     }
 
     private static IEnumerable GetSpells {

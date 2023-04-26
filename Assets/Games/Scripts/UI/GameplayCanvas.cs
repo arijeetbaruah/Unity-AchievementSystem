@@ -5,6 +5,7 @@ using DG.Tweening;
 using Game.Events;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
+using Game.Logger;
 
 public class GameplayCanvas : MonoBehaviour
 {
@@ -74,7 +75,7 @@ public class GameplayCanvas : MonoBehaviour
         gameObject.SetActive(true);
         EventSystem.current.SetSelectedGameObject(null);
         raidalMenu.Open();
-
+        Log.Print("Open Gameplay");
         //foreach(var button in buttons)
         //{
         //    Open(button);
@@ -84,6 +85,7 @@ public class GameplayCanvas : MonoBehaviour
     public void CloseAll()
     {
         raidalMenu.Close();
+        Log.Print("Close Gameplay");
         //foreach (var button in buttons)
         //{
         //    Close(button);

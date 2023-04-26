@@ -38,13 +38,23 @@ public class AITurn : BaseState
 
     public void StartStatusEffect()
     {
+        bool statusBreak = false;
         foreach (var status in characterDetails.StatusEffect)
         {
-            StartStatusEffect(status);
+            if (StartStatusEffect(status))
+            {
+                statusBreak = true;
+                break;
+            }
+        }
+
+        if (statusBreak)
+        {
+            StartStatusEffect();
         }
     }
 
-    public void StartStatusEffect(CombatStatus status)
+    public bool StartStatusEffect(CombatStatus status)
     {
         EventManager.Trigger(new ReportStatusEvent(characterDetails.characterID, status));
 
@@ -57,7 +67,7 @@ public class AITurn : BaseState
                 break;
             case CombatStatus.Down:
                 characterDetails.RemoveStatusEffect(status);
-                break;
+                return true;
             case CombatStatus.Confused:
                 var targets = combatStateMachine.activeOrderedCharacter;
                 int index = UnityEngine.Random.Range(0, targets.Count);
@@ -76,6 +86,7 @@ public class AITurn : BaseState
                 GoToNextTurn();
                 break;
         }
+        return false;
     }
 
     public override void OnUpdate(float deltaTime)

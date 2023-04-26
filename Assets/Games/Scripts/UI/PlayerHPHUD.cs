@@ -37,7 +37,7 @@ public class PlayerHPHUD : MonoBehaviour
     [SerializeField]
     private Transform statusContent;
 
-    private Dictionary<CombatStatus, GameObject> activeStatus;
+    private Dictionary<CombatStatus, GameObject> activeStatus = new Dictionary<CombatStatus, GameObject>();
 
     private void OnEnable()
     {

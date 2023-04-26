@@ -1,3 +1,4 @@
+using Game.Events;
 using Game.Logger;
 using Game.StateMachines;
 using System.Collections;
@@ -15,8 +16,9 @@ public class GameOverState : IState
 
     public void OnStart()
     {
-        string txt = playerWon ? "Won" : "Lost";
-        Log.Print($"Game Over - You {txt}");
+        string txt = $"Game Over - You {(playerWon ? "Won" : "Lost")}";
+        Log.Print(txt, FilterLog.GameEvent);
+        EventManager.Trigger(new GameOverEvents(txt));
     }
 
     public void OnUpdate(float deltaTime)

@@ -6,6 +6,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Spell", menuName = "RPG/Magic/Multi Target")]
 public class MultiTargetSpell : Spell
 {
+
     public override void Execute(List<CharacterDetails> targets, CharacterDetails characterDetails, Action<bool> callback)
     {
         Stats characterStats = characterDetails.Stats.Stats + characterDetails.inventory.GetBonus;
@@ -24,14 +25,17 @@ public class MultiTargetSpell : Spell
             if (isWeak)
             {
                 dmg *= 2;
+                isWeak = target.AddStatusEffect(CombatStatus.Down);
             }
 
             if (isCrit)
             {
                 dmg *= 2;
+                isCrit = target.AddStatusEffect(CombatStatus.Down);
             }
 
-            oneMore = oneMore && (isCrit || isWeak);
+            oneMore = oneMore || (!target.StatusEffect.Contains(CombatStatus.Down) && isCrit || isWeak);
+            UpdateStatus(target);
             target.TakeDamage(dmg);
         }
         

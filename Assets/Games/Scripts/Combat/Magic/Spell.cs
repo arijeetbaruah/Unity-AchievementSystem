@@ -17,8 +17,21 @@ public abstract class Spell : ScriptableObject
     public float critRate;
     public DamageType damageType;
 
+    public CombatStatus status;
+    public float successRate;
+
     public abstract void Execute(List<CharacterDetails> target, CharacterDetails characterDetails, Action<bool> callback);
     public abstract void Update();
+
+    public void UpdateStatus(CharacterDetails target)
+    {
+        float percent = UnityEngine.Random.Range(0, 100);
+        if (percent < successRate)
+        {
+            target.AddStatusEffect(status);
+            EventManager.Trigger(new ReportStatusEvent(target.characterID, status));
+        }
+    }
 
     public bool IsCrit()
     {

@@ -45,6 +45,7 @@ public class SingleStatusSpell : Spell, SingleTarget
         if (percent < successRate)
         {
             target[0].AddStatusEffect(status);
+            UpdateStatus(target[0]);
             EventManager.Trigger(new ReportStatusEvent(target[0].characterID, status));
         }
         callback?.Invoke(false);

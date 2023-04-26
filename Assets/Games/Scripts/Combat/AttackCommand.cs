@@ -23,11 +23,13 @@ public class AttackCommand : ICombatCommand
         if (isWeak)
         {
             dmg *= 2;
+            isWeak = target.AddStatusEffect(CombatStatus.Down);
         }
 
         if (isCrit)
         {
             dmg *= 2;
+            isCrit = target.AddStatusEffect(CombatStatus.Down);
         }
 
         characterDetails.OnTriggerHitAnimation = () =>

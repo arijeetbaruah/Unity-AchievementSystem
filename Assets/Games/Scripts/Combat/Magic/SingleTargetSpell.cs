@@ -49,16 +49,19 @@ public class SingleTargetSpell : Spell, SingleTarget
         if (isWeak)
         {
             dmg *= 2;
+            isWeak = target[0].AddStatusEffect(CombatStatus.Down);
         }
 
         if (isCrit)
         {
             dmg *= 2;
+            isCrit = target[0].AddStatusEffect(CombatStatus.Down);
         }
 
         characterDetails.OnTriggerHitAnimation = () =>
         {
             target[0].TakeDamage(dmg);
+            UpdateStatus(target[0]);
             callback?.Invoke(target[0].StatusEffect.Contains(CombatStatus.Down) && (isCrit || isWeak));
         };
         characterDetails.Animator.Play(animationState);

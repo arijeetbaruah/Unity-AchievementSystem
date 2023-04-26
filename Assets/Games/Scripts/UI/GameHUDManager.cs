@@ -3,6 +3,7 @@ using Game.Events;
 using Game.Service;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GameHUDManager : MonoBehaviour
@@ -15,6 +16,8 @@ public class GameHUDManager : MonoBehaviour
     private Transform critTxt;
     [SerializeField]
     private Transform oneMoreTxt;
+    [SerializeField]
+    private TextMeshProUGUI youWinTxt;
 
     private Dictionary<string, PlayerHPHUD> playerHPDictionary = new Dictionary<string, PlayerHPHUD>();
     private bool isShowingTxt = false;
@@ -27,6 +30,7 @@ public class GameHUDManager : MonoBehaviour
         ServiceRegistry.Get<EventManager>().AddListener<CritEvent>(EnableCritTxt);
         ServiceRegistry.Get<EventManager>().AddListener<OneMoreEvent>(EnableOneMoreTxt);
         ServiceRegistry.Get<EventManager>().AddListener<IsShowingTextEvent>(IsShowingTextEvent);
+        ServiceRegistry.Get<EventManager>().AddListener<GameOverEvents>(GameOverEvents);
     }
 
     private void OnDisable()
@@ -35,11 +39,18 @@ public class GameHUDManager : MonoBehaviour
         ServiceRegistry.Get<EventManager>().RemoveListener<CritEvent>(EnableCritTxt);
         ServiceRegistry.Get<EventManager>().RemoveListener<OneMoreEvent>(EnableOneMoreTxt);
         ServiceRegistry.Get<EventManager>().RemoveListener<IsShowingTextEvent>(IsShowingTextEvent);
+        ServiceRegistry.Get<EventManager>().RemoveListener<GameOverEvents>(GameOverEvents);
     }
 
     private void CreatePlayerHUD(CreatePlayerHUD createPlayerHUD)
     {
         CreateHUD(createPlayerHUD.characterDetails);
+    }
+
+    private void GameOverEvents(GameOverEvents @event)
+    {
+        youWinTxt.gameObject.SetActive(true);
+        youWinTxt.SetText(@event.txt);
     }
 
     public void IsShowingTextEvent(IsShowingTextEvent @event)
