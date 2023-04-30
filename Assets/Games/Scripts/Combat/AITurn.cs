@@ -10,6 +10,7 @@ public class AITurn : BaseState
 {
     private List<CharacterDetails> targetingCharacter;
     private CharacterDetails targetCharacter;
+    private AIController controller;
 
     private float waitTimer = 5;
     private bool attacked = false;
@@ -17,6 +18,7 @@ public class AITurn : BaseState
 
     public AITurn(CombatStateMachine combatStateMachine, CharacterDetails characterDetails) : base(combatStateMachine, characterDetails)
     {
+        controller = characterDetails.GetComponent<AIController>();
     }
 
     public override void OnStart()
@@ -106,8 +108,7 @@ public class AITurn : BaseState
             characterDetails.VirtualCamera.Priority = 50;
             targetCharacter.VirtualCamera.Priority = 100;
 
-            
-            characterDetails.normalAttack.Execute(targetCharacter, characterDetails, isCrit =>
+            controller.Execute(targetingCharacter, characterDetails, isCrit =>
             {
                 this.isCrit = isCrit;
                 EventManager.Trigger(new ChargeMax(characterDetails.characterID, new List<string>() { targetCharacter.characterID }, 2));

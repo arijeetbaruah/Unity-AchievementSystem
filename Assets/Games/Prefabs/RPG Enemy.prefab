@@ -1820,6 +1820,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: -2965628465321424114}
+    - targetCorrespondingSourceObject: {fileID: 1319517528997712, guid: 1543549dcdf638d488bd40cb68dd9b8e,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -2285654703087925001}
   m_SourcePrefab: {fileID: 100100000, guid: 1543549dcdf638d488bd40cb68dd9b8e, type: 3}
 --- !u!4 &7937569708772031663 stripped
 Transform:
@@ -1870,6 +1874,7 @@ MonoBehaviour:
   characterStats: {fileID: 2061005751}
   gameplayCanvas: {fileID: 7941649527523442932}
   gameplayMagicMenu: {fileID: 0}
+  itemMenuUI: {fileID: 0}
   animator: {fileID: 8027015826923647433}
   weaknesses: 
   knownSpells: []
@@ -1902,6 +1907,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weapon: {fileID: 0}
+  armor: {fileID: 0}
+  ring: {fileID: 0}
+  inventoryItems: []
+--- !u!114 &-2285654703087925001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7940646808475011701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c7132f1967a3b048a5969b4f3e17263, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackPattern: {fileID: 11400000, guid: fd4a1deb047274d479924d8d3ae50d9d, type: 2}
 --- !u!4 &7942529331882934175 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4468913360964282, guid: 1543549dcdf638d488bd40cb68dd9b8e,
